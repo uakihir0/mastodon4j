@@ -1,31 +1,25 @@
 package mastodon4j.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author hecateball
  */
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.NONE)
 public class Relationship implements Serializable {
 
-    private static final long serialVersionUID = -6521826192219144201L;
-    @XmlElement(name = "id")
+    @SerializedName("id")
     private long id;
-    @XmlElement(name = "following")
+    @SerializedName("following")
     private boolean following;
-    @XmlElement(name = "followedBy")
+    @SerializedName("followedBy")
     private boolean followedBy;
-    @XmlElement(name = "blocking")
+    @SerializedName("blocking")
     private boolean blocking;
-    @XmlElement(name = "muting")
+    @SerializedName("muting")
     private boolean muting;
-    @XmlElement(name = "requested")
+    @SerializedName("requested")
     private boolean requested;
 
     public long getId() {

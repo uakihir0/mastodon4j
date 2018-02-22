@@ -10,14 +10,6 @@ import mastodon4j.entity.Relationship;
 import mastodon4j.entity.Status;
 import net.socialhub.http.*;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Form;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 /**
  * @author hecateball
  */
@@ -26,13 +18,12 @@ final class _AccountsResource implements AccountsResource {
     private static final long DEFAULT_LIMIT = 40;
     private final String uri;
     private final String bearerToken;
-    private final Client client;
     private final Gson gson;
+
 
     _AccountsResource(String uri, String accessToken) {
         this.uri = uri;
         this.bearerToken = _InternalUtility.getBearerToken(accessToken);
-        this.client = new _ClientSupplier().get();
         this.gson = _InternalUtility.getGsonInstance();
     }
 
@@ -49,11 +40,9 @@ final class _AccountsResource implements AccountsResource {
                     .header("Authorization", this.bearerToken)
                     .get();
 
-            switch (response.getStatusCode()){
-
+            switch (response.getStatusCode()) {
                 case HttpResponseCode.OK:
                     return gson.fromJson(response.asString(), Account.class);
-
                 default:
                     Error error = gson.fromJson(response.asString(), Error.class);
                     throw new MastodonException(error, response.getStatusCode());
@@ -68,22 +57,28 @@ final class _AccountsResource implements AccountsResource {
      */
     @Override
     public Account updateCredentials(String displayName, String note, String avatar, String header) {
-        Form form = new Form()
-                .param("display_name", displayName)
-                .param("note", note)
-                .param("avatar", avatar)
-                .param("header", header);
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/accounts/update_credentials")
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .method("PATCH", Entity.form(form));
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Account.class);
-            default:
-                Error error = response.readEntity(Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
+        try {
+            HttpResponse response = new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/accounts/update_credentials")
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+
+                    .param("display_name", displayName)
+                    .param("note", note)
+                    .param("avatar", avatar)
+                    .param("header", header)
+                    .patch();
+
+            switch (response.getStatusCode()) {
+                case HttpResponseCode.OK:
+                    return gson.fromJson(response.asString(), Account.class);
+                default:
+                    Error error = gson.fromJson(response.asString(), Error.class);
+                    throw new MastodonException(error, response.getStatusCode());
+            }
+        } catch (HttpException e) {
+            throw new MastodonException(e);
         }
     }
 
@@ -92,18 +87,26 @@ final class _AccountsResource implements AccountsResource {
      */
     @Override
     public Account getAccount(long id) {
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/accounts/{id}")
-                .resolveTemplate("id", id)
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + this.bearerToken)
-                .get();
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Account.class);
-            default:
-                Error error = response.readEntity(Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
+
+        try {
+            HttpResponse response = new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/accounts/{id}")
+                    .pathValue("id", String.valueOf(id))
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .get();
+
+            switch (response.getStatusCode()) {
+                case HttpResponseCode.OK:
+                    return gson.fromJson(response.asString(), Account.class);
+                default:
+                    Error error = gson.fromJson(response.asString(), Error.class);
+                    throw new MastodonException(error, response.getStatusCode());
+            }
+
+        } catch (HttpException e) {
+            throw new MastodonException(e);
         }
     }
 
@@ -120,29 +123,39 @@ final class _AccountsResource implements AccountsResource {
      */
     @Override
     public Account[] getFollowers(long id, Range range) {
-        WebTarget target = this.client.target(this.uri)
-                .path("/api/v1/accounts/{id}/followers")
-                .resolveTemplate("id", id);
-        if (range != null) {
-            if (range.getLimit().isPresent()) {
-                target = target.queryParam("limit", range.getLimit().get());
+        try {
+            HttpRequestBuilder build = new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/accounts/{id}/followers")
+                    .pathValue("id", String.valueOf(id));
+
+            if (range != null) {
+                if (range.getLimit().isPresent()) {
+                    build.query("limit", range.getLimit().get());
+                }
+                if (range.getSinceId().isPresent()) {
+                    build.query("since_id", range.getSinceId().get());
+                }
+                if (range.getMaxId().isPresent()) {
+                    build.query("max_id", range.getMaxId().get());
+                }
             }
-            if (range.getSinceId().isPresent()) {
-                target = target.queryParam("since_id", range.getSinceId().get());
+
+            HttpResponse response = build
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .get();
+
+            switch (response.getStatusCode()) {
+                case HttpResponseCode.OK:
+                    return gson.fromJson(response.asString(), Account[].class);
+                default:
+                    Error error = gson.fromJson(response.asString(), Error.class);
+                    throw new MastodonException(error, response.getStatusCode());
             }
-            if (range.getMaxId().isPresent()) {
-                target = target.queryParam("max_id", range.getMaxId().get());
-            }
-        }
-        Response response = target.request(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + this.bearerToken)
-                .get();
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Account[].class);
-            default:
-                Error error = response.readEntity(Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
+
+        } catch (HttpException e) {
+            throw new MastodonException(e);
         }
     }
 
@@ -156,29 +169,38 @@ final class _AccountsResource implements AccountsResource {
 
     @Override
     public Account[] getFollowing(long id, Range range) {
-        WebTarget target = this.client.target(this.uri)
-                .path("/api/v1/accounts/{id}/following")
-                .resolveTemplate("id", id);
-        if (range != null) {
-            if (range.getLimit().isPresent()) {
-                target = target.queryParam("limit", range.getLimit().get());
+        try {
+            HttpRequestBuilder build = new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/accounts/{id}/following")
+                    .pathValue("id", String.valueOf(id));
+
+            if (range != null) {
+                if (range.getLimit().isPresent()) {
+                    build.query("limit", range.getLimit().get());
+                }
+                if (range.getSinceId().isPresent()) {
+                    build.query("since_id", range.getSinceId().get());
+                }
+                if (range.getMaxId().isPresent()) {
+                    build.query("max_id", range.getMaxId().get());
+                }
             }
-            if (range.getSinceId().isPresent()) {
-                target = target.queryParam("since_id", range.getSinceId().get());
+            HttpResponse response = build
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .get();
+
+            switch (response.getStatusCode()) {
+                case HttpResponseCode.OK:
+                    return gson.fromJson(response.asString(), Account[].class);
+                default:
+                    Error error = gson.fromJson(response.asString(), Error.class);
+                    throw new MastodonException(error, response.getStatusCode());
             }
-            if (range.getMaxId().isPresent()) {
-                target = target.queryParam("max_id", range.getMaxId().get());
-            }
-        }
-        Response response = target.request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .get();
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Account[].class);
-            default:
-                Error error = response.readEntity(Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
+
+        } catch (HttpException e) {
+            throw new MastodonException(e);
         }
     }
 
@@ -203,35 +225,45 @@ final class _AccountsResource implements AccountsResource {
      */
     @Override
     public Status[] getStatuses(long id, boolean onlyMedia, boolean excluedeReplies, Range range) {
-        WebTarget target = this.client.target(this.uri)
-                .path("/api/v1/accounts/{id}/statuses")
-                .resolveTemplate("id", id);
-        if (onlyMedia) {
-            target = target.queryParam("only_media", onlyMedia);
-        }
-        if (excluedeReplies) {
-            target = target.queryParam("exclude_replies", excluedeReplies);
-        }
-        if (range != null) {
-            if (range.getLimit().isPresent()) {
-                target = target.queryParam("limit", range.getLimit().get());
+        try {
+            HttpRequestBuilder build = new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/accounts/{id}/statuses")
+                    .pathValue("id", String.valueOf(id));
+
+            if (onlyMedia) {
+                build.query("only_media", onlyMedia);
             }
-            if (range.getSinceId().isPresent()) {
-                target = target.queryParam("since_id", range.getSinceId().get());
+            if (excluedeReplies) {
+                build.query("exclude_replies", excluedeReplies);
             }
-            if (range.getMaxId().isPresent()) {
-                target = target.queryParam("max_id", range.getMaxId().get());
+            if (range != null) {
+                if (range.getLimit().isPresent()) {
+                    build.query("limit", range.getLimit().get());
+                }
+                if (range.getSinceId().isPresent()) {
+                    build.query("since_id", range.getSinceId().get());
+                }
+                if (range.getMaxId().isPresent()) {
+                    build.query("max_id", range.getMaxId().get());
+                }
             }
-        }
-        Response response = target.request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .get();
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Status[].class);
-            default:
-                Error error = response.readEntity(Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
+
+            HttpResponse response = build
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .get();
+
+            switch (response.getStatusCode()) {
+                case HttpResponseCode.OK:
+                    return gson.fromJson(response.asString(), Status[].class);
+                default:
+                    Error error = gson.fromJson(response.asString(), Error.class);
+                    throw new MastodonException(error, response.getStatusCode());
+            }
+
+        } catch (HttpException e) {
+            throw new MastodonException(e);
         }
     }
 
@@ -240,18 +272,26 @@ final class _AccountsResource implements AccountsResource {
      */
     @Override
     public Relationship follow(long id) {
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/accounts/{id}/follow")
-                .resolveTemplate("id", id)
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .post(null);
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Relationship.class);
-            default:
-                Error error = response.readEntity(Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
+
+        try {
+            HttpResponse response = new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/accounts/{id}/follow")
+                    .pathValue("id", String.valueOf(id))
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .post();
+
+            switch (response.getStatusCode()) {
+                case HttpResponseCode.OK:
+                    return gson.fromJson(response.asString(), Relationship.class);
+                default:
+                    Error error = gson.fromJson(response.asString(), Error.class);
+                    throw new MastodonException(error, response.getStatusCode());
+            }
+
+        } catch (HttpException e) {
+            throw new MastodonException(e);
         }
     }
 
@@ -260,18 +300,26 @@ final class _AccountsResource implements AccountsResource {
      */
     @Override
     public Relationship unfollow(long id) {
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/accounts/{id}/unfollow")
-                .resolveTemplate("id", id)
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .post(null);
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Relationship.class);
-            default:
-                Error error = response.readEntity(Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
+
+        try {
+            HttpResponse response = new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/accounts/{id}/unfollow")
+                    .pathValue("id", String.valueOf(id))
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .post();
+
+            switch (response.getStatusCode()) {
+                case HttpResponseCode.OK:
+                    return gson.fromJson(response.asString(), Relationship.class);
+                default:
+                    Error error = gson.fromJson(response.asString(), Error.class);
+                    throw new MastodonException(error, response.getStatusCode());
+            }
+
+        } catch (HttpException e) {
+            throw new MastodonException(e);
         }
     }
 
@@ -280,18 +328,25 @@ final class _AccountsResource implements AccountsResource {
      */
     @Override
     public Relationship block(long id) {
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/accounts/{id}/block")
-                .resolveTemplate("id", id)
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .post(null);
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Relationship.class);
-            default:
-                Error error = response.readEntity(Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
+        try {
+            HttpResponse response = new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/accounts/{id}/block")
+                    .pathValue("id", String.valueOf(id))
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .post();
+
+            switch (response.getStatusCode()) {
+                case HttpResponseCode.OK:
+                    return gson.fromJson(response.asString(), Relationship.class);
+                default:
+                    Error error = gson.fromJson(response.asString(), Error.class);
+                    throw new MastodonException(error, response.getStatusCode());
+            }
+
+        } catch (HttpException e) {
+            throw new MastodonException(e);
         }
     }
 
@@ -300,18 +355,25 @@ final class _AccountsResource implements AccountsResource {
      */
     @Override
     public Relationship unblock(long id) {
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/accounts/{id}/unblock")
-                .resolveTemplate("id", id)
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .post(null);
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Relationship.class);
-            default:
-                Error error = response.readEntity(Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
+        try {
+            HttpResponse response = new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/accounts/{id}/unblock")
+                    .pathValue("id", String.valueOf(id))
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .post();
+
+            switch (response.getStatusCode()) {
+                case HttpResponseCode.OK:
+                    return gson.fromJson(response.asString(), Relationship.class);
+                default:
+                    Error error = gson.fromJson(response.asString(), Error.class);
+                    throw new MastodonException(error, response.getStatusCode());
+            }
+
+        } catch (HttpException e) {
+            throw new MastodonException(e);
         }
     }
 
@@ -320,18 +382,25 @@ final class _AccountsResource implements AccountsResource {
      */
     @Override
     public Relationship mute(long id) {
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/accounts/{id}/mute")
-                .resolveTemplate("id", id)
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .post(null);
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Relationship.class);
-            default:
-                Error error = response.readEntity(Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
+        try {
+            HttpResponse response = new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/accounts/{id}/mute")
+                    .pathValue("id", String.valueOf(id))
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .post();
+
+            switch (response.getStatusCode()) {
+                case HttpResponseCode.OK:
+                    return gson.fromJson(response.asString(), Relationship.class);
+                default:
+                    Error error = gson.fromJson(response.asString(), Error.class);
+                    throw new MastodonException(error, response.getStatusCode());
+            }
+
+        } catch (HttpException e) {
+            throw new MastodonException(e);
         }
     }
 
@@ -340,18 +409,25 @@ final class _AccountsResource implements AccountsResource {
      */
     @Override
     public Relationship unmute(long id) {
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/accounts/{id}/unmute")
-                .resolveTemplate("id", id)
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .post(null);
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Relationship.class);
-            default:
-                Error error = response.readEntity(Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
+        try {
+            HttpResponse response = new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/accounts/{id}/unmute")
+                    .pathValue("id", String.valueOf(id))
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .post();
+
+            switch (response.getStatusCode()) {
+                case HttpResponseCode.OK:
+                    return gson.fromJson(response.asString(), Relationship.class);
+                default:
+                    Error error = gson.fromJson(response.asString(), Error.class);
+                    throw new MastodonException(error, response.getStatusCode());
+            }
+
+        } catch (HttpException e) {
+            throw new MastodonException(e);
         }
     }
 
@@ -360,23 +436,33 @@ final class _AccountsResource implements AccountsResource {
      */
     @Override
     public Relationship[] relationships(long id, long... ids) {
-        WebTarget target = this.client.target(this.uri)
-                .path("/api/v1/accounts/relationships")
-                .queryParam("id[]", id);
-        if (ids != null) {
-            for (long i : ids) {
-                target = target.queryParam("id[]", i);
+        try {
+            HttpRequestBuilder builder = new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/accounts/relationships")
+                    .param("id[]", id);
+
+            if (ids != null) {
+                for (long i : ids) {
+                    builder.param("id[]", i);
+                }
             }
-        }
-        Response response = target.request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .get();
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Relationship[].class);
-            default:
-                Error error = response.readEntity(Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
+
+            HttpResponse response = builder
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .get();
+
+            switch (response.getStatusCode()) {
+                case HttpResponseCode.OK:
+                    return gson.fromJson(response.asString(), Relationship[].class);
+                default:
+                    Error error = gson.fromJson(response.asString(), Error.class);
+                    throw new MastodonException(error, response.getStatusCode());
+            }
+
+        } catch (HttpException e) {
+            throw new MastodonException(e);
         }
     }
 
@@ -390,20 +476,26 @@ final class _AccountsResource implements AccountsResource {
      */
     @Override
     public Account[] search(String query, long limit) {
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/accounts/search")
-                .queryParam("q", query)
-                .queryParam("limit", limit)
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .get();
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Account[].class);
-            default:
-                Error error = response.readEntity(Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
+        try {
+            HttpResponse response = new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/accounts/search")
+                    .param("q", query)
+                    .param("limit", limit)
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .get();
+
+            switch (response.getStatusCode()) {
+                case HttpResponseCode.OK:
+                    return gson.fromJson(response.asString(), Account[].class);
+                default:
+                    Error error = gson.fromJson(response.asString(), Error.class);
+                    throw new MastodonException(error, response.getStatusCode());
+            }
+
+        } catch (HttpException e) {
+            throw new MastodonException(e);
         }
     }
-
 }

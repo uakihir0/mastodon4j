@@ -1,59 +1,53 @@
 package mastodon4j.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author hecateball
  */
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.NONE)
 public class Status implements Serializable {
 
-    private static final long serialVersionUID = -5976946573675678719L;
-    @XmlElement(name = "id")
+    @SerializedName("id")
     private long id;
-    @XmlElement(name = "uri")
+    @SerializedName("uri")
     private String uri;
-    @XmlElement(name = "url")
+    @SerializedName("url")
     private String url;
-    @XmlElement(name = "account")
+    @SerializedName("account")
     private Account account;
-    @XmlElement(name = "in_reply_to_id")
+    @SerializedName("in_reply_to_id")
     private Long inReplyToId;
-    @XmlElement(name = "in_reply_to_account_id")
+    @SerializedName("in_reply_to_account_id")
     private Long inReplyToAccountId;
-    @XmlElement(name = "reblog")
+    @SerializedName("reblog")
     private Status reblog;
-    @XmlElement(name = "content")
+    @SerializedName("content")
     private String content;
-    @XmlElement(name = "created_at")
+    @SerializedName("created_at")
     private String createdAt;
-    @XmlElement(name = "reblogs_count")
+    @SerializedName("reblogs_count")
     private long reblogsCount;
-    @XmlElement(name = "favourites_count")
+    @SerializedName("favourites_count")
     private long favouritesCount;
-    @XmlElement(name = "reblogged")
+    @SerializedName("reblogged")
     private boolean reblogged;
-    @XmlElement(name = "favourited")
+    @SerializedName("favourited")
     private boolean favourited;
-    @XmlElement(name = "sensitive")
+    @SerializedName("sensitive")
     private boolean sensitive;
-    @XmlElement(name = "spoiler_text")
+    @SerializedName("spoiler_text")
     private String spoilerText;
-    @XmlElement(name = "visibility")
+    @SerializedName("visibility")
     private String visibility;
-    @XmlElement(name = "media_attachments")
+    @SerializedName("media_attachments")
     private Attachment[] mediaAttachments;
-    @XmlElement(name = "mentions")
+    @SerializedName("mentions")
     private Mention[] mentions;
-    @XmlElement(name = "tags")
+    @SerializedName("tags")
     private Tag[] tags;
-    @XmlElement(name = "application")
+    @SerializedName("application")
     private Application application;
 
     public long getId() {

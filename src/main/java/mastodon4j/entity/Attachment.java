@@ -1,31 +1,25 @@
 package mastodon4j.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author hecateball
  */
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.NONE)
 public class Attachment implements Serializable {
 
-    private static final long serialVersionUID = 3779861393478105917L;
-    @XmlElement(name = "id")
+    @SerializedName("id")
     private long id;
-    @XmlElement(name = "type")
+    @SerializedName("type")
     private String type;
-    @XmlElement(name = "url")
+    @SerializedName("url")
     private String url;
-    @XmlElement(name = "remote_url")
+    @SerializedName("remote_url")
     private String remoteUrl;
-    @XmlElement(name = "preview_url")
+    @SerializedName("preview_url")
     private String previewUrl;
-    @XmlElement(name = "text_url")
+    @SerializedName("text_url")
     private String textUrl;
 
     public long getId() {
