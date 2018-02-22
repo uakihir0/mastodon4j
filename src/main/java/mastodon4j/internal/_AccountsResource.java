@@ -1,5 +1,15 @@
 package mastodon4j.internal;
 
+import com.google.gson.Gson;
+import mastodon4j.MastodonException;
+import mastodon4j.Range;
+import mastodon4j.api.AccountsResource;
+import mastodon4j.entity.Account;
+import mastodon4j.entity.Error;
+import mastodon4j.entity.Relationship;
+import mastodon4j.entity.Status;
+import net.socialhub.http.*;
+
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
@@ -7,16 +17,8 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import static javax.ws.rs.core.Response.Status.OK;
-import mastodon4j.Range;
-import mastodon4j.api.AccountsResource;
-import mastodon4j.entity.Account;
-import mastodon4j.entity.Error;
-import mastodon4j.entity.Relationship;
-import mastodon4j.entity.Status;
 
 /**
- *
  * @author hecateball
  */
 final class _AccountsResource implements AccountsResource {
@@ -25,11 +27,13 @@ final class _AccountsResource implements AccountsResource {
     private final String uri;
     private final String bearerToken;
     private final Client client;
+    private final Gson gson;
 
     _AccountsResource(String uri, String accessToken) {
         this.uri = uri;
-        this.bearerToken = _InternalUtility.getBearerToken(accessToken);;
+        this.bearerToken = _InternalUtility.getBearerToken(accessToken);
         this.client = new _ClientSupplier().get();
+        this.gson = _InternalUtility.getGsonInstance();
     }
 
     /**
@@ -37,17 +41,25 @@ final class _AccountsResource implements AccountsResource {
      */
     @Override
     public Account verifyCredentials() {
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/accounts/verify_credentials")
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .get();
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Account.class);
-            default:
-                Error error = response.readEntity(Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
+        try {
+            HttpResponse response = new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/accounts/verify_credentials")
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .get();
+
+            switch (response.getStatusCode()){
+
+                case HttpResponseCode.OK:
+                    return gson.fromJson(response.asString(), Account.class);
+
+                default:
+                    Error error = gson.fromJson(response.asString(), Error.class);
+                    throw new MastodonException(error, response.getStatusCode());
+            }
+        } catch (HttpException e) {
+            throw new MastodonException(e);
         }
     }
 

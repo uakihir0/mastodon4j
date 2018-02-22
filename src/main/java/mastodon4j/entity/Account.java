@@ -1,49 +1,44 @@
 package mastodon4j.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author hecateball
  */
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.NONE)
 public class Account implements Serializable {
 
     private static final long serialVersionUID = 7028160804135739581L;
-    @XmlElement(name = "id")
+    @SerializedName("id")
     private long id;
-    @XmlElement(name = "username")
+    @SerializedName("username")
     private String userName;
-    @XmlElement(name = "acct")
+    @SerializedName("acct")
     private String account;
-    @XmlElement(name = "display_name")
+    @SerializedName("display_name")
     private String displayName;
-    @XmlElement(name = "locked")
+    @SerializedName("locked")
     private boolean locked;
-    @XmlElement(name = "created_at")
+    @SerializedName("created_at")
     private String createdAt;
-    @XmlElement(name = "followers_count")
+    @SerializedName("followers_count")
     private long followersCount;
-    @XmlElement(name = "following_count")
+    @SerializedName("following_count")
     private long followingCount;
-    @XmlElement(name = "statuses_count")
+    @SerializedName("statuses_count")
     private long statusesCount;
-    @XmlElement(name = "note")
+    @SerializedName("note")
     private String note;
-    @XmlElement(name = "url")
+    @SerializedName("url")
     private String url;
-    @XmlElement(name = "avatar")
+    @SerializedName("avatar")
     private String avatar;
-    @XmlElement(name = "avatar_static")
+    @SerializedName("avatar_static")
     private String avatarStatic;
-    @XmlElement(name = "header")
+    @SerializedName("header")
     private String header;
-    @XmlElement(name = "header_static")
+    @SerializedName("header_static")
     private String headerStatic;
 
     public long getId() {
