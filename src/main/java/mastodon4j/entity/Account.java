@@ -9,7 +9,6 @@ import java.io.Serializable;
  */
 public class Account implements Serializable {
 
-    private static final long serialVersionUID = 7028160804135739581L;
     @SerializedName("id")
     private long id;
     @SerializedName("username")

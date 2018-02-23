@@ -1,25 +1,19 @@
 package mastodon4j.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author hecateball
  */
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.NONE)
 public class Results implements Serializable {
 
-    private static final long serialVersionUID = -2574904438341694323L;
-    @XmlElement(name = "accounts")
+    @SerializedName("accounts")
     private Account[] accounts;
-    @XmlElement(name = "statuses")
+    @SerializedName("statuses")
     private Status[] statuses;
-    @XmlElement(name = "hashtags")
+    @SerializedName("hashtags")
     private String[] hashtags;
 
     public Account[] getAccounts() {

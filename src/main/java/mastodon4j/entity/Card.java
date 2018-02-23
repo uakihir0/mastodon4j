@@ -1,27 +1,21 @@
 package mastodon4j.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author hecateball
  */
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.NONE)
 public class Card implements Serializable {
 
-    private static final long serialVersionUID = 831952452895090809L;
-    @XmlElement(name = "url")
+    @SerializedName("url")
     private String url;
-    @XmlElement(name = "title")
+    @SerializedName("title")
     private String title;
-    @XmlElement(name = "description")
+    @SerializedName("description")
     private String description;
-    @XmlElement(name = "image")
+    @SerializedName("image")
     private String image;
 
     public String getUrl() {

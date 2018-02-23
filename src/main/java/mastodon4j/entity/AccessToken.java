@@ -1,27 +1,21 @@
 package mastodon4j.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author hecateball
  */
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.NONE)
 public class AccessToken implements Serializable {
 
-    private static final long serialVersionUID = 7475203556076986424L;
-    @XmlElement(name = "access_token")
+    @SerializedName("access_token")
     private String accessToken;
-    @XmlElement(name = "token_type")
+    @SerializedName("token_type")
     private String tokenType;
-    @XmlElement(name = "scope")
+    @SerializedName("scope")
     private String scope;
-    @XmlElement(name = "created_at")
+    @SerializedName("created_at")
     private long createdAt;
 
     public String getAccessToken() {

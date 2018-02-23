@@ -1,29 +1,23 @@
 package mastodon4j.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author hecateball
  */
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.NONE)
 public class Notification implements Serializable {
 
-    private static final long serialVersionUID = 8473802005520770288L;
-    @XmlElement(name = "id")
+    @SerializedName("id")
     private long id;
-    @XmlElement(name = "type")
+    @SerializedName("type")
     private String type;
-    @XmlElement(name = "created_at")
+    @SerializedName("created_at")
     private String createdAt;
-    @XmlElement(name = "account")
+    @SerializedName("account")
     private Account account;
-    @XmlElement(name = "status")
+    @SerializedName("status")
     private Status status;
 
     public long getId() {

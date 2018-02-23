@@ -1,69 +1,61 @@
 package mastodon4j.internal;
 
-import java.util.Arrays;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Form;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import mastodon4j.api.ReportsResource;
-import mastodon4j.entity.Error;
 import mastodon4j.entity.Report;
+import net.socialhub.http.HttpMediaType;
+import net.socialhub.http.HttpRequestBuilder;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+import static mastodon4j.internal._InternalUtility.proceed;
 
 /**
- *
  * @author hecateball
  */
 final class _ReportsResource implements ReportsResource {
 
     private final String uri;
     private final String bearerToken;
-    private final Client client;
 
     _ReportsResource(String uri, String accessToken) {
         this.uri = uri;
-        this.bearerToken = _InternalUtility.getBearerToken(accessToken);;
-        this.client = new _ClientSupplier().get();
+        this.bearerToken = _InternalUtility.getBearerToken(accessToken);
     }
 
     @Override
     public Report[] getReports() {
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/reports")
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .get();
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Report[].class);
-            default:
-                mastodon4j.entity.Error error = response.readEntity(mastodon4j.entity.Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
-        }
+        return proceed(Report[].class, () -> {
+
+            return new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/reports")
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .get();
+        });
     }
 
     @Override
     public Report postReport(long accountId, long[] statusIds, String comment) {
         //TODO: NOT WORKING?
-        Form form = new Form();
-        form.param("account_id", String.valueOf(accountId));
-        Arrays.stream(statusIds)
-                .mapToObj(String::valueOf)
-                .forEach(statusId -> form.param("status_ids", statusId));
-        form.param("comment", comment);
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/reports")
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .post(Entity.form(form));
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Report.class);
-            default:
-                Error error = response.readEntity(Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
-        }
-    }
 
+        return proceed(Report.class, () -> {
+
+            String statuses =
+                    Arrays.stream(statusIds)
+                            .mapToObj(String::valueOf)
+                            .collect(Collectors.joining(","));
+
+            return new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/reports")
+                    .param("comment", comment)
+                    .param("status_ids", statuses)
+                    .param("account_id", String.valueOf(accountId))
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .post();
+        });
+    }
 }

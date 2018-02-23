@@ -1,41 +1,52 @@
 package mastodon4j.internal;
 
+import com.google.gson.Gson;
+import mastodon4j.MastodonException;
 import mastodon4j.entity.Status;
 import mastodon4j.streaming.HashtagStream;
 import mastodon4j.streaming.HashtagStreamListener;
-import org.glassfish.jersey.media.sse.EventSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.socialhub.http.HttpRequestBuilder;
+import net.socialhub.http.HttpResponse;
+import net.socialhub.logger.Logger;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 /**
- *
  * @author hecateball
  */
 final class _HashtagStream implements HashtagStream {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(_HashtagStream.class);
+    private static final Logger LOGGER = Logger.getLogger(_HashtagStream.class);
 
-    private final EventSource eventSource;
+    private final HttpRequestBuilder builder;
+    private _StreamEvent streamEvent;
+    private Thread thread;
+    private boolean isOpen = false;
+    private final Gson gson;
 
-    public _HashtagStream(EventSource eventSource) {
-        this.eventSource = eventSource;
+
+    public _HashtagStream(HttpRequestBuilder builder) {
+        this.builder = builder;
+        this.gson = _InternalUtility.getGsonInstance();
     }
 
     @Override
     public HashtagStream register(HashtagStreamListener listener) {
-        this.eventSource.register(event -> {
+        this.streamEvent = new _StreamEvent((event) -> {
+
             switch (event.getName()) {
                 case "update":
-                    listener.onUpdate(event.readData(Status.class));
+                    listener.onUpdate(gson.fromJson(event.getData(), Status.class));
                     break;
                 case "notification":
                     // Hashtag stream might not receive notification
                     break;
                 case "delete":
-                    listener.onDelete(event.readData(Long.class));
+                    listener.onDelete(gson.fromJson(event.getData(), Long.class));
                     break;
                 default:
-                    LOGGER.trace("Unexpected event name: {}", event.getName());
+                    LOGGER.debug("Unexpected event name: " + event.getName());
             }
         });
         return this;
@@ -43,16 +54,36 @@ final class _HashtagStream implements HashtagStream {
 
     @Override
     public void open() {
-        if (!this.eventSource.isOpen()) {
-            this.eventSource.open();
+        if (!isOpen) {
+            thread = new Thread(() -> {
+                try {
+                    HttpResponse response = builder.get();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(response.asStream(), "UTF-8"));
+                    String line;
+
+                    do {
+                        line = reader.readLine();
+                        this.streamEvent.add(line);
+                        Thread.sleep(1000);
+                    } while (line != null);
+
+                } catch (InterruptedException e) {
+                    // close connection
+                } catch (Exception e) {
+                    // http exception
+                    throw new MastodonException(e);
+                }
+            });
+            thread.run();
+            isOpen = true;
         }
     }
 
     @Override
     public void close() {
-        if (this.eventSource.isOpen()) {
-            this.eventSource.close();
+        if (isOpen) {
+            thread.interrupt();
+            isOpen = false;
         }
     }
-
 }

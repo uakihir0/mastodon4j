@@ -1,228 +1,193 @@
 package mastodon4j.internal;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Form;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import mastodon4j.api.StatusesResource;
 import mastodon4j.entity.Account;
 import mastodon4j.entity.Card;
 import mastodon4j.entity.Context;
 import mastodon4j.entity.Status;
+import net.socialhub.http.HttpMediaType;
+import net.socialhub.http.HttpRequestBuilder;
+
+import static mastodon4j.internal._InternalUtility.proceed;
 
 /**
- *
  * @author hecateball
  */
 final class _StatusesResource implements StatusesResource {
 
     private final String uri;
     private final String bearerToken;
-    private final Client client;
 
     _StatusesResource(String uri, String accessToken) {
         this.uri = uri;
         this.bearerToken = _InternalUtility.getBearerToken(accessToken);
-        this.client = new _ClientSupplier().get();
     }
 
     @Override
     public Status getStatus(long id) {
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/statuses/{id}")
-                .resolveTemplate("id", id)
-                .request(MediaType.APPLICATION_JSON)
-                .get();
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Status.class);
-            default:
-                mastodon4j.entity.Error error = response.readEntity(mastodon4j.entity.Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
-        }
+        return proceed(Status.class, () -> {
+
+            return new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/statuses/{id}")
+                    .pathValue("id", String.valueOf(id))
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .get();
+        });
     }
 
     @Override
     public Context getContext(long id) {
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/statuses/{id}/context")
-                .resolveTemplate("id", id)
-                .request(MediaType.APPLICATION_JSON)
-                .get();
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Context.class);
-            default:
-                mastodon4j.entity.Error error = response.readEntity(mastodon4j.entity.Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
-        }
+        return proceed(Context.class, () -> {
+
+            return new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/statuses/{id}/context")
+                    .pathValue("id", String.valueOf(id))
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .get();
+        });
     }
 
     @Override
     public Card getCard(long id) {
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/statuses/{id}/card")
-                .resolveTemplate("id", id)
-                .request(MediaType.APPLICATION_JSON)
-                .get();
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Card.class);
-            default:
-                mastodon4j.entity.Error error = response.readEntity(mastodon4j.entity.Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
-        }
+        return proceed(Card.class, () -> {
+
+            return new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/statuses/{id}/card")
+                    .pathValue("id", String.valueOf(id))
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .get();
+        });
     }
 
     @Override
     public Account[] getRebloggedBy(long id) {
         //TODO: need to support: max_id, since_id, limit
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/statuses/{id}/reblogged_by")
-                .resolveTemplate("id", id)
-                .request(MediaType.APPLICATION_JSON)
-                .get();
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Account[].class);
-            default:
-                mastodon4j.entity.Error error = response.readEntity(mastodon4j.entity.Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
-        }
+
+        return proceed(Account[].class, () -> {
+
+            return new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/statuses/{id}/reblogged_by")
+                    .pathValue("id", String.valueOf(id))
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .get();
+        });
     }
 
     @Override
     public Account[] getFavouritedBy(long id) {
         //TODO: need to support: max_id, since_id, limit
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/statuses/{id}/favourited_by")
-                .resolveTemplate("id", id)
-                .request(MediaType.APPLICATION_JSON)
-                .get();
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Account[].class);
-            default:
-                mastodon4j.entity.Error error = response.readEntity(mastodon4j.entity.Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
-        }
+
+        return proceed(Account[].class, () -> {
+
+            return new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/statuses/{id}/favourited_by")
+                    .pathValue("id", String.valueOf(id))
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .get();
+        });
     }
 
     @Override
     public Status postStatus(Status status) {
-        Form form = new Form("status", status.getContent());
-        if (status.getInReplyToId() != null) {
-            form = form.param("in_reply_to_id", String.valueOf(status.getInReplyToId()));
-        }
-        if (status.isSensitive()) {
-            form = form.param("sensitive", "true");
-        }
-        if (status.getSpoilerText() != null && !status.getSpoilerText().isEmpty()) {
-            form = form.param("spoiler_text", status.getSpoilerText());
-        }
-        if (status.getVisibility() != null && !status.getVisibility().isEmpty()) {
-            form = form.param("visibility", status.getVisibility());
-        }
-        //TODO: support media_ids
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/statuses")
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .post(Entity.form(form));
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Status.class);
-            default:
-                mastodon4j.entity.Error error = response.readEntity(mastodon4j.entity.Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
-        }
+        return proceed(Status.class, () -> {
+
+            //TODO: support media_ids
+            HttpRequestBuilder builder = new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/statuses");
+
+            builder.param("status", status.getContent());
+            if (status.getInReplyToId() != null) {
+                builder.param("in_reply_to_id", String.valueOf(status.getInReplyToId()));
+            }
+            if (status.isSensitive()) {
+                builder.param("sensitive", "true");
+            }
+            if (status.getSpoilerText() != null && !status.getSpoilerText().isEmpty()) {
+                builder.param("spoiler_text", status.getSpoilerText());
+            }
+            if (status.getVisibility() != null && !status.getVisibility().isEmpty()) {
+                builder.param("visibility", status.getVisibility());
+            }
+
+            return builder.request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .post();
+        });
     }
 
     @Override
     public void deleteStatus(long id) {
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/statuses/{id}")
-                .resolveTemplate("id", id)
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .delete();
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return;
-            default:
-                mastodon4j.entity.Error error = response.readEntity(mastodon4j.entity.Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
-        }
+        proceed(() -> {
+
+            return new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/statuses/{id}")
+                    .pathValue("id", String.valueOf(id))
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .delete();
+        });
     }
 
     @Override
     public Status reblog(long id) {
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/statuses/{id}/reblog")
-                .resolveTemplate("id", id)
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .post(null);
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Status.class);
-            default:
-                mastodon4j.entity.Error error = response.readEntity(mastodon4j.entity.Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
-        }
+        return proceed(Status.class, () -> {
+
+            return new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/statuses/{id}/reblog")
+                    .pathValue("id", String.valueOf(id))
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .post();
+        });
     }
 
     @Override
     public Status unreblog(long id) {
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/statuses/{id}/unreblog")
-                .resolveTemplate("id", id)
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .post(null);
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Status.class);
-            default:
-                mastodon4j.entity.Error error = response.readEntity(mastodon4j.entity.Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
-        }
+        return proceed(Status.class, () -> {
+
+            return new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/statuses/{id}/unreblog")
+                    .pathValue("id", String.valueOf(id))
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .post();
+        });
     }
 
     @Override
     public Status favourite(long id) {
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/statuses/{id}/favourite")
-                .resolveTemplate("id", id)
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .post(null);
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Status.class);
-            default:
-                mastodon4j.entity.Error error = response.readEntity(mastodon4j.entity.Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
-        }
+        return proceed(Status.class, () -> {
+
+            return new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/statuses/{id}/favourite")
+                    .pathValue("id", String.valueOf(id))
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .post();
+        });
     }
 
     @Override
     public Status unfavourite(long id) {
-        Response response = this.client.target(this.uri)
-                .path("/api/v1/statuses/{id}/unfavourite")
-                .resolveTemplate("id", id)
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", this.bearerToken)
-                .post(null);
-        switch (Response.Status.fromStatusCode(response.getStatus())) {
-            case OK:
-                return response.readEntity(Status.class);
-            default:
-                mastodon4j.entity.Error error = response.readEntity(mastodon4j.entity.Error.class);
-                throw new WebApplicationException(error.getError(), response.getStatus());
-        }
-    }
+        return proceed(Status.class, () -> {
 
+            return new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/statuses/{id}/unfavourite")
+                    .pathValue("id", String.valueOf(id))
+                    .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .post();
+        });
+    }
 }
