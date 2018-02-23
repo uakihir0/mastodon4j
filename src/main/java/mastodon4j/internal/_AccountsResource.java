@@ -1,6 +1,5 @@
 package mastodon4j.internal;
 
-import com.google.gson.Gson;
 import mastodon4j.Range;
 import mastodon4j.api.AccountsResource;
 import mastodon4j.entity.Account;

@@ -1,6 +1,5 @@
 package mastodon4j.internal;
 
-import com.google.gson.Gson;
 import mastodon4j.api.FollowRequestsResource;
 import mastodon4j.entity.Account;
 import net.socialhub.http.HttpMediaType;

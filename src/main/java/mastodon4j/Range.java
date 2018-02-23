@@ -3,7 +3,6 @@ package mastodon4j;
 import java.util.Optional;
 
 /**
- *
  * @author hecateball
  */
 public final class Range {

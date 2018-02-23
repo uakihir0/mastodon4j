@@ -3,20 +3,15 @@ package mastodon4j.entity;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author hecateball
  */
 public class Context implements Serializable {
 
-    @SerializedName( "statuses")
+    @SerializedName("statuses")
     private Status[] statuses;
-    @SerializedName( "descendants")
+    @SerializedName("descendants")
     private Status[] descendants;
 
     public Status[] getStatuses() {
