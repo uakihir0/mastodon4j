@@ -2,6 +2,7 @@ package mastodon4j.internal;
 
 import mastodon4j.api.FollowRequestsResource;
 import mastodon4j.entity.Account;
+import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
 
@@ -21,7 +22,7 @@ final class _FollowRequestsResource implements FollowRequestsResource {
     }
 
     @Override
-    public Account[] getFollowRequests() {
+    public Response<Account[]> getFollowRequests() {
         //TODO: need to support: max_id, since_id, limit
 
         return proceed(Account[].class, () -> {
@@ -36,8 +37,8 @@ final class _FollowRequestsResource implements FollowRequestsResource {
     }
 
     @Override
-    public void authorizeFollowRequest(long id) {
-        proceed(() -> {
+    public Response<Void> authorizeFollowRequest(long id) {
+        return proceed(() -> {
 
             return new HttpRequestBuilder()
                     .target(this.uri)
@@ -50,8 +51,8 @@ final class _FollowRequestsResource implements FollowRequestsResource {
     }
 
     @Override
-    public void rejectFollowRequest(long id) {
-        proceed(() -> {
+    public Response<Void> rejectFollowRequest(long id) {
+        return proceed(() -> {
 
             return new HttpRequestBuilder()
                     .target(this.uri)

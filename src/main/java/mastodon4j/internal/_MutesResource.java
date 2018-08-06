@@ -2,6 +2,7 @@ package mastodon4j.internal;
 
 import mastodon4j.api.MutesResource;
 import mastodon4j.entity.Account;
+import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
 
@@ -21,7 +22,7 @@ final class _MutesResource implements MutesResource {
     }
 
     @Override
-    public Account[] getMutes() {
+    public Response<Account[]> getMutes() {
         //TODO: need to support: max_id, since_id, limit
 
         return proceed(Account[].class, () -> {

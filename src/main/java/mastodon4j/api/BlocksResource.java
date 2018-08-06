@@ -2,6 +2,7 @@ package mastodon4j.api;
 
 import mastodon4j.Range;
 import mastodon4j.entity.Account;
+import mastodon4j.entity.share.Response;
 
 /**
  *
@@ -14,7 +15,7 @@ public interface BlocksResource {
      *
      * @return an array of Accounts blocked by the authenticated user
      */
-    public Account[] getBlocks();
+    public Response<Account[]> getBlocks();
 
     /**
      * Fetching a user's blocks.
@@ -22,5 +23,5 @@ public interface BlocksResource {
      * @param range
      * @return an array of Accounts blocked by the authenticated user
      */
-    public Account[] getBlocks(Range range);
+    public Response<Account[]> getBlocks(Range range);
 }

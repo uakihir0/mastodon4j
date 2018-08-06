@@ -5,6 +5,7 @@ import mastodon4j.entity.Account;
 import mastodon4j.entity.Card;
 import mastodon4j.entity.Context;
 import mastodon4j.entity.Status;
+import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
 
@@ -24,7 +25,7 @@ final class _StatusesResource implements StatusesResource {
     }
 
     @Override
-    public Status getStatus(long id) {
+    public Response<Status> getStatus(long id) {
         return proceed(Status.class, () -> {
 
             return new HttpRequestBuilder()
@@ -37,7 +38,7 @@ final class _StatusesResource implements StatusesResource {
     }
 
     @Override
-    public Context getContext(long id) {
+    public Response<Context> getContext(long id) {
         return proceed(Context.class, () -> {
 
             return new HttpRequestBuilder()
@@ -50,7 +51,7 @@ final class _StatusesResource implements StatusesResource {
     }
 
     @Override
-    public Card getCard(long id) {
+    public Response<Card> getCard(long id) {
         return proceed(Card.class, () -> {
 
             return new HttpRequestBuilder()
@@ -63,7 +64,7 @@ final class _StatusesResource implements StatusesResource {
     }
 
     @Override
-    public Account[] getRebloggedBy(long id) {
+    public Response<Account[]> getRebloggedBy(long id) {
         //TODO: need to support: max_id, since_id, limit
 
         return proceed(Account[].class, () -> {
@@ -78,7 +79,7 @@ final class _StatusesResource implements StatusesResource {
     }
 
     @Override
-    public Account[] getFavouritedBy(long id) {
+    public Response<Account[]> getFavouritedBy(long id) {
         //TODO: need to support: max_id, since_id, limit
 
         return proceed(Account[].class, () -> {
@@ -93,7 +94,7 @@ final class _StatusesResource implements StatusesResource {
     }
 
     @Override
-    public Status postStatus(Status status) {
+    public Response<Status> postStatus(Status status) {
         return proceed(Status.class, () -> {
 
             //TODO: support media_ids
@@ -122,8 +123,8 @@ final class _StatusesResource implements StatusesResource {
     }
 
     @Override
-    public void deleteStatus(long id) {
-        proceed(() -> {
+    public Response<Void> deleteStatus(long id) {
+        return proceed(() -> {
 
             return new HttpRequestBuilder()
                     .target(this.uri)
@@ -136,7 +137,7 @@ final class _StatusesResource implements StatusesResource {
     }
 
     @Override
-    public Status reblog(long id) {
+    public Response<Status> reblog(long id) {
         return proceed(Status.class, () -> {
 
             return new HttpRequestBuilder()
@@ -150,7 +151,7 @@ final class _StatusesResource implements StatusesResource {
     }
 
     @Override
-    public Status unreblog(long id) {
+    public Response<Status> unreblog(long id) {
         return proceed(Status.class, () -> {
 
             return new HttpRequestBuilder()
@@ -164,7 +165,7 @@ final class _StatusesResource implements StatusesResource {
     }
 
     @Override
-    public Status favourite(long id) {
+    public Response<Status> favourite(long id) {
         return proceed(Status.class, () -> {
 
             return new HttpRequestBuilder()
@@ -178,7 +179,7 @@ final class _StatusesResource implements StatusesResource {
     }
 
     @Override
-    public Status unfavourite(long id) {
+    public Response<Status> unfavourite(long id) {
         return proceed(Status.class, () -> {
 
             return new HttpRequestBuilder()

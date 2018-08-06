@@ -4,6 +4,7 @@ import mastodon4j.entity.Account;
 import mastodon4j.entity.Card;
 import mastodon4j.entity.Context;
 import mastodon4j.entity.Status;
+import mastodon4j.entity.share.Response;
 
 /**
  *
@@ -17,7 +18,7 @@ public interface StatusesResource {
      * @param id
      * @return a Status
      */
-    public Status getStatus(long id);
+    public Response<Status> getStatus(long id);
 
     /**
      * Getting status context.
@@ -25,7 +26,7 @@ public interface StatusesResource {
      * @param id
      * @return a Context
      */
-    public Context getContext(long id);
+    public Response<Context> getContext(long id);
 
     /**
      * Getting a card associated with a status.
@@ -33,7 +34,7 @@ public interface StatusesResource {
      * @param id
      * @return a Card
      */
-    public Card getCard(long id);
+    public Response<Card> getCard(long id);
 
     /**
      * Getting who reblogged a status.
@@ -41,7 +42,7 @@ public interface StatusesResource {
      * @param id
      * @return an array of Accounts
      */
-    public Account[] getRebloggedBy(long id);
+    public Response<Account[]> getRebloggedBy(long id);
 
     /**
      * Getting who favourited a status.
@@ -49,7 +50,7 @@ public interface StatusesResource {
      * @param id
      * @return an array of Accounts
      */
-    public Account[] getFavouritedBy(long id);
+    public Response<Account[]> getFavouritedBy(long id);
 
     /**
      * Posting a new status.
@@ -57,28 +58,28 @@ public interface StatusesResource {
      * @param status
      * @return the new Status.
      */
-    public Status postStatus(Status status);
+    public Response<Status> postStatus(Status status);
 
     /**
      * Deleting a status.
      *
      * @param id
      */
-    public void deleteStatus(long id);
+    public Response<Void> deleteStatus(long id);
 
     /**
      * Reblogging a status.
      *
      * @param id
      */
-    public Status reblog(long id);
+    public Response<Status> reblog(long id);
 
     /**
      * Unreblogging a status.
      *
      * @param id
      */
-    public Status unreblog(long id);
+    public Response<Status> unreblog(long id);
 
     /**
      * Favouriting a status.
@@ -86,7 +87,7 @@ public interface StatusesResource {
      * @param id
      * @return
      */
-    public Status favourite(long id);
+    public Response<Status> favourite(long id);
 
     /**
      * Unfavouriting a status.
@@ -94,5 +95,5 @@ public interface StatusesResource {
      * @param id
      * @return
      */
-    public Status unfavourite(long id);
+    public Response<Status> unfavourite(long id);
 }

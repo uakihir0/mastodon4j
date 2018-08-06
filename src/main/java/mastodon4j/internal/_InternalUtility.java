@@ -3,6 +3,8 @@ package mastodon4j.internal;
 import com.google.gson.Gson;
 import mastodon4j.MastodonException;
 import mastodon4j.entity.Error;
+import mastodon4j.entity.share.RateLimit;
+import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpException;
 import net.socialhub.http.HttpResponse;
 import net.socialhub.http.HttpResponseCode;
@@ -25,12 +27,14 @@ class _InternalUtility {
         return gson;
     }
 
-    static void proceed(RequestInterface function) {
+    static Response<Void> proceed(RequestInterface function) {
         try {
             HttpResponse response = function.proceed();
             switch (response.getStatusCode()) {
                 case HttpResponseCode.OK:
-                    return;
+                    Response<Void> result = new Response<>();
+                    result.setRateLimit(RateLimit.of(response));
+                    return result;
                 default:
                     Error error = gson.fromJson(response.asString(), Error.class);
                     throw new MastodonException(error, response.getStatusCode());
@@ -40,12 +44,16 @@ class _InternalUtility {
         }
     }
 
-    static <T> T proceed(Class<T> clazz, RequestInterface function) {
+    static <T> Response<T> proceed(Class<T> clazz, RequestInterface function) {
         try {
             HttpResponse response = function.proceed();
             switch (response.getStatusCode()) {
                 case HttpResponseCode.OK:
-                    return gson.fromJson(response.asString(), clazz);
+                    Response<T> result = new Response<>();
+                    result.set(gson.fromJson(response.asString(), clazz));
+                    result.setRateLimit(RateLimit.of(response));
+                    return result;
+
                 default:
                     Error error = gson.fromJson(response.asString(), Error.class);
                     throw new MastodonException(error, response.getStatusCode());

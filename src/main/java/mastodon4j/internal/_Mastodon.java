@@ -4,6 +4,7 @@ import mastodon4j.Mastodon;
 import mastodon4j.Range;
 import mastodon4j.api.*;
 import mastodon4j.entity.*;
+import mastodon4j.entity.share.Response;
 import mastodon4j.streaming.HashtagStream;
 import mastodon4j.streaming.PublicStream;
 import mastodon4j.streaming.UserStream;
@@ -134,7 +135,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Account verifyCredentials() {
+    public Response<Account> verifyCredentials() {
         return accounts().verifyCredentials();
     }
 
@@ -142,7 +143,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Account updateCredentials(String displayName, String note, String avatar, String header) {
+    public Response<Account> updateCredentials(String displayName, String note, String avatar, String header) {
         return this.accounts().updateCredentials(displayName, note, avatar, header);
     }
 
@@ -150,7 +151,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Account getAccount(long id) {
+    public Response<Account> getAccount(long id) {
         return this.accounts().getAccount(id);
     }
 
@@ -158,7 +159,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Account[] getFollowers(long id) {
+    public Response<Account[]> getFollowers(long id) {
         return this.accounts().getFollowers(id);
     }
 
@@ -166,7 +167,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Account[] getFollowers(long id, Range range) {
+    public Response<Account[]> getFollowers(long id, Range range) {
         return this.accounts().getFollowers(id, range);
     }
 
@@ -174,7 +175,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Account[] getFollowing(long id) {
+    public Response<Account[]> getFollowing(long id) {
         return this.accounts().getFollowing(id);
     }
 
@@ -182,7 +183,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Account[] getFollowing(long id, Range range) {
+    public Response<Account[]> getFollowing(long id, Range range) {
         return this.accounts().getFollowing(id, range);
     }
 
@@ -190,7 +191,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Status[] getStatuses(long id) {
+    public Response<Status[]> getStatuses(long id) {
         return this.accounts().getStatuses(id);
     }
 
@@ -198,7 +199,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Status[] getStatuses(long id, Range range) {
+    public Response<Status[]> getStatuses(long id, Range range) {
         return this.accounts().getStatuses(id, range);
     }
 
@@ -206,7 +207,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Status[] getStatuses(long id, boolean onlyMedia, boolean excluedeReplies, Range range) {
+    public Response<Status[]> getStatuses(long id, boolean onlyMedia, boolean excluedeReplies, Range range) {
         return this.accounts().getStatuses(id, onlyMedia, excluedeReplies, range);
     }
 
@@ -214,7 +215,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Relationship follow(long id) {
+    public Response<Relationship> follow(long id) {
         return this.accounts().follow(id);
     }
 
@@ -222,7 +223,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Relationship unfollow(long id) {
+    public Response<Relationship> unfollow(long id) {
         return this.accounts().unfollow(id);
     }
 
@@ -230,7 +231,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Relationship block(long id) {
+    public Response<Relationship> block(long id) {
         return this.accounts().block(id);
     }
 
@@ -238,7 +239,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Relationship unblock(long id) {
+    public Response<Relationship> unblock(long id) {
         return this.accounts().unblock(id);
     }
 
@@ -246,7 +247,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Relationship mute(long id) {
+    public Response<Relationship> mute(long id) {
         return this.accounts().mute(id);
     }
 
@@ -254,7 +255,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Relationship unmute(long id) {
+    public Response<Relationship> unmute(long id) {
         return this.accounts().unmute(id);
     }
 
@@ -262,12 +263,12 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Relationship[] relationships(long id, long... ids) {
+    public Response<Relationship[]> relationships(long id, long... ids) {
         return this.accounts().relationships(id, ids);
     }
 
     @Override
-    public Account[] search(String query) {
+    public Response<Account[]> search(String query) {
         return this.accounts().search(query);
     }
 
@@ -275,7 +276,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Account[] search(String query, long limit) {
+    public Response<Account[]> search(String query, long limit) {
         return this.accounts().search(query, limit);
     }
 
@@ -283,7 +284,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public ClientCredential registerApplication(Application app, String redirectUris, String scopes) {
+    public Response<ClientCredential> registerApplication(Application app, String redirectUris, String scopes) {
         return this.apps().registerApplication(app, redirectUris, scopes);
     }
 
@@ -291,12 +292,12 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Account[] getBlocks() {
+    public Response<Account[]> getBlocks() {
         return this.blocks().getBlocks();
     }
 
     @Override
-    public Account[] getBlocks(Range range) {
+    public Response<Account[]> getBlocks(Range range) {
         return this.blocks().getBlocks(range);
     }
 
@@ -304,7 +305,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Status[] getFavourites() {
+    public Response<Status[]> getFavourites() {
         return this.favourites().getFavourites();
     }
 
@@ -312,7 +313,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Status[] getFavourites(Range range) {
+    public Response<Status[]> getFavourites(Range range) {
         return this.favourites().getFavourites(range);
     }
 
@@ -320,7 +321,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Account[] getFollowRequests() {
+    public Response<Account[]> getFollowRequests() {
         return this.followRequests().getFollowRequests();
     }
 
@@ -328,23 +329,23 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public void authorizeFollowRequest(long id) {
-        this.followRequests().authorizeFollowRequest(id);
+    public Response<Void> authorizeFollowRequest(long id) {
+        return this.followRequests().authorizeFollowRequest(id);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void rejectFollowRequest(long id) {
-        this.followRequests().rejectFollowRequest(id);
+    public Response<Void> rejectFollowRequest(long id) {
+        return this.followRequests().rejectFollowRequest(id);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Account follow(String uri) {
+    public Response<Account> follow(String uri) {
         return this.follows().follow(uri);
     }
 
@@ -352,7 +353,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Instance getInstance() {
+    public Response<Instance> getInstance() {
         return this.instances().getInstance();
     }
 
@@ -360,7 +361,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Attachment postMedia(String file) {
+    public Response<Attachment> postMedia(String file) {
         return this.media().postMedia(file);
     }
 
@@ -368,7 +369,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Account[] getMutes() {
+    public Response<Account[]> getMutes() {
         return this.mutes().getMutes();
     }
 
@@ -376,7 +377,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Notification[] getNotifications() {
+    public Response<Notification[]> getNotifications() {
         return this.notifications().getNotifications();
     }
 
@@ -384,7 +385,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Notification getNotification(long id) {
+    public Response<Notification> getNotification(long id) {
         return this.notifications().getNotification(id);
     }
 
@@ -392,15 +393,15 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public void clearNotifications() {
-        this.notifications().clearNotifications();
+    public Response<Void> clearNotifications() {
+        return this.notifications().clearNotifications();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public AccessToken issueAccessToken(String clientId, String clientSecret, String emailAddress, String password, String scopes) {
+    public Response<AccessToken> issueAccessToken(String clientId, String clientSecret, String emailAddress, String password, String scopes) {
         return this.oauth().issueAccessToken(clientId, clientSecret, emailAddress, password, scopes);
     }
 
@@ -408,7 +409,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Report[] getReports() {
+    public Response<Report[]> getReports() {
         return this.reports().getReports();
     }
 
@@ -416,7 +417,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Report postReport(long accountId, long[] statusIds, String comment) {
+    public Response<Report> postReport(long accountId, long[] statusIds, String comment) {
         return this.reports().postReport(accountId, statusIds, comment);
     }
 
@@ -424,7 +425,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Results search(String query, boolean resolve) {
+    public Response<Results> search(String query, boolean resolve) {
         return this.search().search(query, resolve);
     }
 
@@ -432,7 +433,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Status getStatus(long id) {
+    public Response<Status> getStatus(long id) {
         return this.statuses().getStatus(id);
     }
 
@@ -440,7 +441,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Context getContext(long id) {
+    public Response<Context> getContext(long id) {
         return this.statuses().getContext(id);
     }
 
@@ -448,7 +449,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Card getCard(long id) {
+    public Response<Card> getCard(long id) {
         return this.statuses().getCard(id);
     }
 
@@ -456,7 +457,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Account[] getRebloggedBy(long id) {
+    public Response<Account[]> getRebloggedBy(long id) {
         return this.statuses().getRebloggedBy(id);
     }
 
@@ -464,7 +465,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Account[] getFavouritedBy(long id) {
+    public Response<Account[]> getFavouritedBy(long id) {
         return this.statuses().getFavouritedBy(id);
     }
 
@@ -472,7 +473,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Status postStatus(Status status) {
+    public Response<Status> postStatus(Status status) {
         return this.statuses().postStatus(status);
     }
 
@@ -480,15 +481,15 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public void deleteStatus(long id) {
-        this.statuses().deleteStatus(id);
+    public Response<Void> deleteStatus(long id) {
+        return this.statuses().deleteStatus(id);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Status reblog(long id) {
+    public Response<Status> reblog(long id) {
         return this.statuses().reblog(id);
     }
 
@@ -496,7 +497,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Status unreblog(long id) {
+    public Response<Status> unreblog(long id) {
         return this.statuses().unreblog(id);
     }
 
@@ -504,7 +505,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Status favourite(long id) {
+    public Response<Status> favourite(long id) {
         return this.statuses().favourite(id);
     }
 
@@ -512,7 +513,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Status unfavourite(long id) {
+    public Response<Status> unfavourite(long id) {
         return this.statuses().unfavourite(id);
     }
 
@@ -560,7 +561,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Status[] getHomeTimeline() {
+    public Response<Status[]> getHomeTimeline() {
         return this.timelines().getHomeTimeline();
     }
 
@@ -568,7 +569,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Status[] getPublicTimeline(boolean local) {
+    public Response<Status[]> getPublicTimeline(boolean local) {
         return this.timelines().getPublicTimeline(local);
     }
 
@@ -576,7 +577,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Status[] getHashtagTimeline(String hashtag, boolean local) {
+    public Response<Status[]> getHashtagTimeline(String hashtag, boolean local) {
         return this.timelines().getHashtagTimeline(hashtag, local);
     }
 

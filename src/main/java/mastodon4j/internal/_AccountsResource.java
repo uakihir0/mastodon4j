@@ -5,6 +5,7 @@ import mastodon4j.api.AccountsResource;
 import mastodon4j.entity.Account;
 import mastodon4j.entity.Relationship;
 import mastodon4j.entity.Status;
+import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
 
@@ -29,7 +30,7 @@ final class _AccountsResource implements AccountsResource {
      * {@inheritDoc}
      */
     @Override
-    public Account verifyCredentials() {
+    public Response<Account> verifyCredentials() {
         return proceed(Account.class, () -> {
 
             return new HttpRequestBuilder()
@@ -45,7 +46,7 @@ final class _AccountsResource implements AccountsResource {
      * {@inheritDoc}
      */
     @Override
-    public Account updateCredentials(String displayName, String note, String avatar, String header) {
+    public Response<Account> updateCredentials(String displayName, String note, String avatar, String header) {
         return proceed(Account.class, () -> {
 
             return new HttpRequestBuilder()
@@ -66,7 +67,7 @@ final class _AccountsResource implements AccountsResource {
      * {@inheritDoc}
      */
     @Override
-    public Account getAccount(long id) {
+    public Response<Account> getAccount(long id) {
         return proceed(Account.class, () -> {
 
             return new HttpRequestBuilder()
@@ -83,7 +84,7 @@ final class _AccountsResource implements AccountsResource {
      * {@inheritDoc}
      */
     @Override
-    public Account[] getFollowers(long id) {
+    public Response<Account[]> getFollowers(long id) {
         return this.getFollowers(id, null);
     }
 
@@ -91,7 +92,7 @@ final class _AccountsResource implements AccountsResource {
      * {@inheritDoc}
      */
     @Override
-    public Account[] getFollowers(long id, Range range) {
+    public Response<Account[]> getFollowers(long id, Range range) {
         return proceed(Account[].class, () -> {
 
             HttpRequestBuilder build = new HttpRequestBuilder()
@@ -122,12 +123,12 @@ final class _AccountsResource implements AccountsResource {
      * {@inheritDoc}
      */
     @Override
-    public Account[] getFollowing(long id) {
+    public Response<Account[]> getFollowing(long id) {
         return this.getFollowing(id, null);
     }
 
     @Override
-    public Account[] getFollowing(long id, Range range) {
+    public Response<Account[]> getFollowing(long id, Range range) {
         return proceed(Account[].class, () -> {
 
             HttpRequestBuilder build = new HttpRequestBuilder()
@@ -158,7 +159,7 @@ final class _AccountsResource implements AccountsResource {
      * {@inheritDoc}
      */
     @Override
-    public Status[] getStatuses(long id) {
+    public Response<Status[]> getStatuses(long id) {
         return this.getStatuses(id, false, false, null);
     }
 
@@ -166,7 +167,7 @@ final class _AccountsResource implements AccountsResource {
      * {@inheritDoc}
      */
     @Override
-    public Status[] getStatuses(long id, Range range) {
+    public Response<Status[]> getStatuses(long id, Range range) {
         return this.getStatuses(id, false, false, range);
     }
 
@@ -174,7 +175,7 @@ final class _AccountsResource implements AccountsResource {
      * {@inheritDoc}
      */
     @Override
-    public Status[] getStatuses(long id, boolean onlyMedia, boolean excluedeReplies, Range range) {
+    public Response<Status[]> getStatuses(long id, boolean onlyMedia, boolean excluedeReplies, Range range) {
         return proceed(Status[].class, () -> {
 
             HttpRequestBuilder build = new HttpRequestBuilder()
@@ -211,7 +212,7 @@ final class _AccountsResource implements AccountsResource {
      * {@inheritDoc}
      */
     @Override
-    public Relationship follow(long id) {
+    public Response<Relationship> follow(long id) {
         return proceed(Relationship.class, () -> {
 
             return new HttpRequestBuilder()
@@ -228,7 +229,7 @@ final class _AccountsResource implements AccountsResource {
      * {@inheritDoc}
      */
     @Override
-    public Relationship unfollow(long id) {
+    public Response<Relationship> unfollow(long id) {
         return proceed(Relationship.class, () -> {
 
             return new HttpRequestBuilder()
@@ -245,7 +246,7 @@ final class _AccountsResource implements AccountsResource {
      * {@inheritDoc}
      */
     @Override
-    public Relationship block(long id) {
+    public Response<Relationship> block(long id) {
         return proceed(Relationship.class, () -> {
 
             return new HttpRequestBuilder()
@@ -262,7 +263,7 @@ final class _AccountsResource implements AccountsResource {
      * {@inheritDoc}
      */
     @Override
-    public Relationship unblock(long id) {
+    public Response<Relationship> unblock(long id) {
         return proceed(Relationship.class, () -> {
 
             return new HttpRequestBuilder()
@@ -279,7 +280,7 @@ final class _AccountsResource implements AccountsResource {
      * {@inheritDoc}
      */
     @Override
-    public Relationship mute(long id) {
+    public Response<Relationship> mute(long id) {
         return proceed(Relationship.class, () -> {
 
             return new HttpRequestBuilder()
@@ -296,7 +297,7 @@ final class _AccountsResource implements AccountsResource {
      * {@inheritDoc}
      */
     @Override
-    public Relationship unmute(long id) {
+    public Response<Relationship> unmute(long id) {
         return proceed(Relationship.class, () -> {
 
             return new HttpRequestBuilder()
@@ -313,7 +314,7 @@ final class _AccountsResource implements AccountsResource {
      * {@inheritDoc}
      */
     @Override
-    public Relationship[] relationships(long id, long... ids) {
+    public Response<Relationship[]> relationships(long id, long... ids) {
         return proceed(Relationship[].class, () -> {
 
             HttpRequestBuilder builder = new HttpRequestBuilder()
@@ -335,7 +336,7 @@ final class _AccountsResource implements AccountsResource {
     }
 
     @Override
-    public Account[] search(String query) {
+    public Response<Account[]> search(String query) {
         return this.search(query, DEFAULT_LIMIT);
     }
 
@@ -343,7 +344,7 @@ final class _AccountsResource implements AccountsResource {
      * {@inheritDoc}
      */
     @Override
-    public Account[] search(String query, long limit) {
+    public Response<Account[]> search(String query, long limit) {
         return proceed(Account[].class, () -> {
 
             return new HttpRequestBuilder()

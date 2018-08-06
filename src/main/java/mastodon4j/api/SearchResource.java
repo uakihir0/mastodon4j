@@ -1,6 +1,7 @@
 package mastodon4j.api;
 
 import mastodon4j.entity.Results;
+import mastodon4j.entity.share.Response;
 
 /**
  *
@@ -16,5 +17,5 @@ public interface SearchResource {
      * @return Results. If query is a URL, Mastodon will attempt to fetch the provided account or status. Otherwise, it
      * will do a local account and hashtag search
      */
-    public Results search(String query, boolean resolve);
+    public Response<Results> search(String query, boolean resolve);
 }

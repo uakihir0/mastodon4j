@@ -2,6 +2,7 @@ package mastodon4j.internal;
 
 import mastodon4j.api.TimelinesResource;
 import mastodon4j.entity.Status;
+import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
 
@@ -21,7 +22,7 @@ final class _TimelinesResource implements TimelinesResource {
     }
 
     @Override
-    public Status[] getHomeTimeline() {
+    public Response<Status[]> getHomeTimeline() {
         //TODO: need to support:local, max_id, since_id, limit
 
         return proceed(Status[].class, () -> {
@@ -36,7 +37,7 @@ final class _TimelinesResource implements TimelinesResource {
     }
 
     @Override
-    public Status[] getPublicTimeline(boolean local) {
+    public Response<Status[]> getPublicTimeline(boolean local) {
         //TODO: need to support:local, max_id, since_id, limit
 
         return proceed(Status[].class, () -> {
@@ -51,7 +52,7 @@ final class _TimelinesResource implements TimelinesResource {
     }
 
     @Override
-    public Status[] getHashtagTimeline(String hashtag, boolean local) {
+    public Response<Status[]> getHashtagTimeline(String hashtag, boolean local) {
         //TODO: need to support:local, max_id, since_id, limit
 
         return proceed(Status[].class, () -> {

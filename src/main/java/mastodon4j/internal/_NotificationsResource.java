@@ -2,6 +2,7 @@ package mastodon4j.internal;
 
 import mastodon4j.api.NotificationsResource;
 import mastodon4j.entity.Notification;
+import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
 
@@ -21,7 +22,7 @@ final class _NotificationsResource implements NotificationsResource {
     }
 
     @Override
-    public Notification[] getNotifications() {
+    public Response<Notification[]> getNotifications() {
         //TODO: need to support: max_id, since_id, limit
 
         return proceed(Notification[].class, () -> {
@@ -36,7 +37,7 @@ final class _NotificationsResource implements NotificationsResource {
     }
 
     @Override
-    public Notification getNotification(long id) {
+    public Response<Notification> getNotification(long id) {
         return proceed(Notification.class, () -> {
 
             return new HttpRequestBuilder()
@@ -50,8 +51,8 @@ final class _NotificationsResource implements NotificationsResource {
     }
 
     @Override
-    public void clearNotifications() {
-        proceed(() -> {
+    public Response<Void> clearNotifications() {
+        return proceed(() -> {
 
             return new HttpRequestBuilder()
                     .target(this.uri)

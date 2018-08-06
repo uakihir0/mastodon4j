@@ -2,6 +2,7 @@ package mastodon4j.internal;
 
 import mastodon4j.api.MediaResource;
 import mastodon4j.entity.Attachment;
+import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
 
@@ -21,7 +22,7 @@ final class _MediaResource implements MediaResource {
     }
 
     @Override
-    public Attachment postMedia(String file) {
+    public Response<Attachment> postMedia(String file) {
         return proceed(Attachment.class, () -> {
 
             return new HttpRequestBuilder()

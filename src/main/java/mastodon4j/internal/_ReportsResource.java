@@ -2,6 +2,7 @@ package mastodon4j.internal;
 
 import mastodon4j.api.ReportsResource;
 import mastodon4j.entity.Report;
+import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
 
@@ -24,7 +25,7 @@ final class _ReportsResource implements ReportsResource {
     }
 
     @Override
-    public Report[] getReports() {
+    public Response<Report[]> getReports() {
         return proceed(Report[].class, () -> {
 
             return new HttpRequestBuilder()
@@ -37,7 +38,7 @@ final class _ReportsResource implements ReportsResource {
     }
 
     @Override
-    public Report postReport(long accountId, long[] statusIds, String comment) {
+    public Response<Report> postReport(long accountId, long[] statusIds, String comment) {
         //TODO: NOT WORKING?
 
         return proceed(Report.class, () -> {

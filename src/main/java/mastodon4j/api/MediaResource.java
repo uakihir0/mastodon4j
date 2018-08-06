@@ -1,6 +1,7 @@
 package mastodon4j.api;
 
 import mastodon4j.entity.Attachment;
+import mastodon4j.entity.share.Response;
 
 /**
  *
@@ -14,5 +15,5 @@ public interface MediaResource {
      * @param file media to be uploaded
      * @return an Attachment that can be used when creating a status
      */
-    public Attachment postMedia(String file);
+    public Response<Attachment> postMedia(String file);
 }

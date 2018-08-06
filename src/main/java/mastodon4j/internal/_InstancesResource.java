@@ -2,6 +2,7 @@ package mastodon4j.internal;
 
 import mastodon4j.api.InstancesResource;
 import mastodon4j.entity.Instance;
+import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
 
@@ -19,7 +20,7 @@ final class _InstancesResource implements InstancesResource {
     }
 
     @Override
-    public Instance getInstance() {
+    public Response<Instance> getInstance() {
         return proceed(Instance.class, () -> {
 
             return new HttpRequestBuilder()

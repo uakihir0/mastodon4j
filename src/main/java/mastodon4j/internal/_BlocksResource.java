@@ -3,6 +3,7 @@ package mastodon4j.internal;
 import mastodon4j.Range;
 import mastodon4j.api.BlocksResource;
 import mastodon4j.entity.Account;
+import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
 
@@ -22,12 +23,12 @@ final class _BlocksResource implements BlocksResource {
     }
 
     @Override
-    public Account[] getBlocks() {
+    public Response<Account[]> getBlocks() {
         return this.getBlocks(null);
     }
 
     @Override
-    public Account[] getBlocks(Range range) {
+    public Response<Account[]> getBlocks(Range range) {
         return proceed(Account[].class, () -> {
 
             HttpRequestBuilder builder = new HttpRequestBuilder()

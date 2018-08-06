@@ -1,6 +1,7 @@
 package mastodon4j.api;
 
 import mastodon4j.entity.Report;
+import mastodon4j.entity.share.Response;
 
 /**
  *
@@ -13,7 +14,7 @@ public interface ReportsResource {
      *
      * @return a list of Reports made by the authenticated user
      */
-    public Report[] getReports();
+    public Response<Report[]> getReports();
 
     /**
      * Reporting a user.
@@ -23,5 +24,5 @@ public interface ReportsResource {
      * @param comment
      * @return the finished Report
      */
-    public Report postReport(long accountId, long[] statusIds, String comment);
+    public Response<Report> postReport(long accountId, long[] statusIds, String comment);
 }

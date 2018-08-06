@@ -1,6 +1,7 @@
 package mastodon4j.api;
 
 import mastodon4j.entity.Status;
+import mastodon4j.entity.share.Response;
 
 /**
  *
@@ -13,7 +14,7 @@ public interface TimelinesResource {
      *
      * @return an array of Statuses, most recent ones first
      */
-    public Status[] getHomeTimeline();
+    public Response<Status[]> getHomeTimeline();
 
     /**
      * Retrieving a public timeline.
@@ -21,7 +22,7 @@ public interface TimelinesResource {
      * @param local (optional) only return statuses originating from this instance
      * @return an array of Statuses, most recent ones first
      */
-    public Status[] getPublicTimeline(boolean local);
+    public Response<Status[]> getPublicTimeline(boolean local);
 
     /**
      * Retrieving a tag timeline.
@@ -30,5 +31,5 @@ public interface TimelinesResource {
      * @param local (optional) only return statuses originating from this instance
      * @return an array of Statuses, most recent ones first
      */
-    public Status[] getHashtagTimeline(String hashtag, boolean local);
+    public Response<Status[]> getHashtagTimeline(String hashtag, boolean local);
 }

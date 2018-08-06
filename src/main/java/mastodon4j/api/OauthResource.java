@@ -1,6 +1,7 @@
 package mastodon4j.api;
 
 import mastodon4j.entity.AccessToken;
+import mastodon4j.entity.share.Response;
 
 /**
  *
@@ -18,5 +19,5 @@ public interface OauthResource {
      * @param scopes
      * @return an AccessToken
      */
-    public AccessToken issueAccessToken(String clientId, String clientSecret, String emailAddress, String password, String scopes);
+    public Response<AccessToken> issueAccessToken(String clientId, String clientSecret, String emailAddress, String password, String scopes);
 }

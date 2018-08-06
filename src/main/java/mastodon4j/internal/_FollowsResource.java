@@ -2,6 +2,7 @@ package mastodon4j.internal;
 
 import mastodon4j.api.FollowsResource;
 import mastodon4j.entity.Account;
+import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
 
@@ -21,7 +22,7 @@ final class _FollowsResource implements FollowsResource {
     }
 
     @Override
-    public Account follow(String uri) {
+    public Response<Account> follow(String uri) {
         return proceed(Account.class, () -> {
 
             return new HttpRequestBuilder()

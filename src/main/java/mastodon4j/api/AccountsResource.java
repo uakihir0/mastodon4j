@@ -4,6 +4,7 @@ import mastodon4j.Range;
 import mastodon4j.entity.Account;
 import mastodon4j.entity.Relationship;
 import mastodon4j.entity.Status;
+import mastodon4j.entity.share.Response;
 
 /**
  *
@@ -16,7 +17,7 @@ public interface AccountsResource {
      *
      * @return the authenticated user's Account
      */
-    public Account verifyCredentials();
+    public Response<Account> verifyCredentials();
 
     /**
      * Updating the current user.
@@ -29,7 +30,7 @@ public interface AccountsResource {
      * data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAADrCAYAAAA...)
      * @return the updated Account
      */
-    public Account updateCredentials(String displayName, String note, String avatar, String header);
+    public Response<Account> updateCredentials(String displayName, String note, String avatar, String header);
 
     /**
      * Fetching an account.
@@ -37,7 +38,7 @@ public interface AccountsResource {
      * @param id
      * @return an Account
      */
-    public Account getAccount(long id);
+    public Response<Account> getAccount(long id);
 
     /**
      * Getting an account's followers.
@@ -45,7 +46,7 @@ public interface AccountsResource {
      * @param id
      * @return an array of Accounts
      */
-    public Account[] getFollowers(long id);
+    public Response<Account[]> getFollowers(long id);
 
     /**
      * Getting an account's followers.
@@ -54,7 +55,7 @@ public interface AccountsResource {
      * @param range
      * @return an array of Accounts
      */
-    public Account[] getFollowers(long id, Range range);
+    public Response<Account[]> getFollowers(long id, Range range);
 
     /**
      * Getting who account is following.
@@ -62,7 +63,7 @@ public interface AccountsResource {
      * @param id
      * @return an array of Accounts
      */
-    public Account[] getFollowing(long id);
+    public Response<Account[]> getFollowing(long id);
 
     /**
      * Getting who account is following.
@@ -71,7 +72,7 @@ public interface AccountsResource {
      * @param range
      * @return an array of Accounts
      */
-    public Account[] getFollowing(long id, Range range);
+    public Response<Account[]> getFollowing(long id, Range range);
 
     /**
      * Getting an account's statuses.
@@ -79,7 +80,7 @@ public interface AccountsResource {
      * @param id
      * @return an array of Statuses
      */
-    public Status[] getStatuses(long id);
+    public Response<Status[]> getStatuses(long id);
 
     /**
      * Getting an account's statuses.
@@ -88,7 +89,7 @@ public interface AccountsResource {
      * @param range
      * @return an array of Statuses
      */
-    public Status[] getStatuses(long id, Range range);
+    public Response<Status[]> getStatuses(long id, Range range);
 
     /**
      * Getting an account's statuses.
@@ -99,7 +100,7 @@ public interface AccountsResource {
      * @param range
      * @return an array of Statuses
      */
-    public Status[] getStatuses(long id, boolean onlyMedia, boolean excluedeReplies, Range range);
+    public Response<Status[]> getStatuses(long id, boolean onlyMedia, boolean excluedeReplies, Range range);
 
     /**
      * Following an account.
@@ -107,7 +108,7 @@ public interface AccountsResource {
      * @param id
      * @return the target account's Relationship.
      */
-    public Relationship follow(long id);
+    public Response<Relationship> follow(long id);
 
     /**
      * Unfollowing an account.
@@ -115,7 +116,7 @@ public interface AccountsResource {
      * @param id
      * @return the target account's Relationship.
      */
-    public Relationship unfollow(long id);
+    public Response<Relationship> unfollow(long id);
 
     /**
      * Blocking an account.
@@ -123,7 +124,7 @@ public interface AccountsResource {
      * @param id
      * @return the target account's Relationship.
      */
-    public Relationship block(long id);
+    public Response<Relationship> block(long id);
 
     /**
      * Unblocking an account.
@@ -131,7 +132,7 @@ public interface AccountsResource {
      * @param id
      * @return the target account's Relationship.
      */
-    public Relationship unblock(long id);
+    public Response<Relationship> unblock(long id);
 
     /**
      * Muting an account.
@@ -139,7 +140,7 @@ public interface AccountsResource {
      * @param id
      * @return the target account's Relationship.
      */
-    public Relationship mute(long id);
+    public Response<Relationship> mute(long id);
 
     /**
      * Unmuting an account.
@@ -147,7 +148,7 @@ public interface AccountsResource {
      * @param id
      * @return the target account's Relationship.
      */
-    public Relationship unmute(long id);
+    public Response<Relationship> unmute(long id);
 
     /**
      * Getting an account's relationships.
@@ -156,7 +157,7 @@ public interface AccountsResource {
      * @param ids
      * @return an array of Relationships of the current user to a list of given accounts.
      */
-    public Relationship[] relationships(long id, long... ids);
+    public Response<Relationship[]> relationships(long id, long... ids);
 
     /**
      * Searching for accounts.
@@ -165,7 +166,7 @@ public interface AccountsResource {
      * @return an array of matching Accounts. Will lookup an account remotely if the search term is in the
      * username@domain format and not yet in the database.
      */
-    public Account[] search(String query);
+    public Response<Account[]> search(String query);
 
     /**
      * Searching for accounts.
@@ -175,5 +176,5 @@ public interface AccountsResource {
      * @return an array of matching Accounts. Will lookup an account remotely if the search term is in the
      * username@domain format and not yet in the database.
      */
-    public Account[] search(String query, long limit);
+    public Response<Account[]> search(String query, long limit);
 }

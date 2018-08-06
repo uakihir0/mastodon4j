@@ -1,6 +1,7 @@
 package mastodon4j.api;
 
 import mastodon4j.entity.Account;
+import mastodon4j.entity.share.Response;
 
 /**
  *
@@ -14,5 +15,5 @@ public interface FollowsResource {
      * @param uri username@domain of the person you want to follow
      * @return the local representation of the followed account, as an Account
      */
-    public Account follow(String uri);
+    public Response<Account> follow(String uri);
 }

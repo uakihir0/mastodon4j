@@ -3,6 +3,7 @@ package mastodon4j.internal;
 import mastodon4j.Range;
 import mastodon4j.api.FavouritesResource;
 import mastodon4j.entity.Status;
+import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
 
@@ -22,12 +23,12 @@ final class _FavouritesResource implements FavouritesResource {
     }
 
     @Override
-    public Status[] getFavourites() {
+    public Response<Status[]> getFavourites() {
         return this.getFavourites(null);
     }
 
     @Override
-    public Status[] getFavourites(Range range) {
+    public Response<Status[]> getFavourites(Range range) {
         return proceed(Status[].class, () -> {
 
             HttpRequestBuilder builder = new HttpRequestBuilder()

@@ -1,6 +1,7 @@
 package mastodon4j.api;
 
 import mastodon4j.entity.Instance;
+import mastodon4j.entity.share.Response;
 
 /**
  *
@@ -13,5 +14,5 @@ public interface InstancesResource {
      *
      * @return the current Instance. Does not require authentication
      */
-    public Instance getInstance();
+    public Response<Instance> getInstance();
 }

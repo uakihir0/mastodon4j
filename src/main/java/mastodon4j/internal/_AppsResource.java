@@ -3,6 +3,7 @@ package mastodon4j.internal;
 import mastodon4j.api.AppsResource;
 import mastodon4j.entity.Application;
 import mastodon4j.entity.ClientCredential;
+import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
 
@@ -23,7 +24,7 @@ final class _AppsResource implements AppsResource {
      * {@inheritDoc}
      */
     @Override
-    public ClientCredential registerApplication(Application application, String redirectUris, String scopes) {
+    public Response<ClientCredential> registerApplication(Application application, String redirectUris, String scopes) {
         return proceed(ClientCredential.class, () -> {
 
             HttpRequestBuilder builder = new HttpRequestBuilder()

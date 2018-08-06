@@ -1,6 +1,7 @@
 package mastodon4j.api;
 
 import mastodon4j.entity.Account;
+import mastodon4j.entity.share.Response;
 
 /**
  *
@@ -13,5 +14,5 @@ public interface MutesResource {
      *
      * @return an array of Accounts muted by the authenticated user
      */
-    public Account[] getMutes();
+    public Response<Account[]> getMutes();
 }

@@ -2,6 +2,7 @@ package mastodon4j.internal;
 
 import mastodon4j.api.OauthResource;
 import mastodon4j.entity.AccessToken;
+import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
 
@@ -22,7 +23,7 @@ final class _OauthResource implements OauthResource {
      * {@inheritDoc}
      */
     @Override
-    public AccessToken issueAccessToken(String clientId, String clientSecret, String emailAddress, String password, String scopes) {
+    public Response<AccessToken> issueAccessToken(String clientId, String clientSecret, String emailAddress, String password, String scopes) {
         return proceed(AccessToken.class, () -> {
 
             return new HttpRequestBuilder()

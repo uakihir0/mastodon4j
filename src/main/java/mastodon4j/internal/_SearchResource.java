@@ -2,6 +2,7 @@ package mastodon4j.internal;
 
 import mastodon4j.api.SearchResource;
 import mastodon4j.entity.Results;
+import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
 
@@ -19,7 +20,7 @@ final class _SearchResource implements SearchResource {
     }
 
     @Override
-    public Results search(String query, boolean resolve) {
+    public Response<Results> search(String query, boolean resolve) {
         return proceed(Results.class, () -> {
 
             return new HttpRequestBuilder()

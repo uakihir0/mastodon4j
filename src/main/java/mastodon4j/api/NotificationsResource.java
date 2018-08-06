@@ -1,6 +1,7 @@
 package mastodon4j.api;
 
 import mastodon4j.entity.Notification;
+import mastodon4j.entity.share.Response;
 
 /**
  *
@@ -13,7 +14,7 @@ public interface NotificationsResource {
      *
      * @return a list of Notifications for the authenticated user
      */
-    public Notification[] getNotifications();
+    public Response<Notification[]> getNotifications();
 
     /**
      * Getting a single notification.
@@ -21,11 +22,11 @@ public interface NotificationsResource {
      * @param id
      * @return the Notification
      */
-    public Notification getNotification(long id);
+    public Response<Notification> getNotification(long id);
 
     /**
      * Clearing notifications. Deletes all notifications from the Mastodon server for the authenticated user.
      */
-    public void clearNotifications();
+    public Response<Void> clearNotifications();
 
 }
