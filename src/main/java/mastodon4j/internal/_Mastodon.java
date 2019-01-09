@@ -409,6 +409,22 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
+    public Response<AccessToken> issueAccessToken(String clientId, String clientSecret, String redirectUri, String code) {
+        return oauth.issueAccessToken(clientId, clientSecret, redirectUri, code);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getAuthorizationUrl(String clientId, String redirectUri, String scopes) {
+        return oauth.getAuthorizationUrl(clientId, redirectUri, scopes);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Response<Report[]> getReports() {
         return this.reports().getReports();
     }

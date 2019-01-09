@@ -8,6 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+/**
+ * @author uakihir0
+ */
 public class RateLimit {
 
     private static final Logger logger = Logger.getLogger(RateLimit.class);

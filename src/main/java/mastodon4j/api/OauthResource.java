@@ -20,4 +20,25 @@ public interface OauthResource {
      * @return an AccessToken
      */
     public Response<AccessToken> issueAccessToken(String clientId, String clientSecret, String emailAddress, String password, String scopes);
+
+    /**
+     * Attempt to login with authorization code, and then retrieve the access token for the current user.
+     *
+     * @param clientId
+     * @param clientSecret
+     * @param redirectUri
+     * @param code
+     * @return an AccessToken
+     */
+    public Response<AccessToken> issueAccessToken(String clientId, String clientSecret, String redirectUri, String code);
+
+    /**
+     * Get Authorization URL
+     *
+     * @param clientId
+     * @param redirectUri
+     * @param scopes
+     * @return an Authorization URL
+     */
+    public String getAuthorizationUrl(String clientId, String redirectUri, String scopes);
 }
