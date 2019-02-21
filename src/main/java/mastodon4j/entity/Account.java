@@ -19,6 +19,8 @@ public class Account implements Serializable {
     private String displayName;
     @SerializedName("locked")
     private boolean locked;
+    @SerializedName("bot")
+    private Boolean bot;
     @SerializedName("created_at")
     private String createdAt;
     @SerializedName("followers_count")
@@ -39,6 +41,11 @@ public class Account implements Serializable {
     private String header;
     @SerializedName("header_static")
     private String headerStatic;
+
+    @SerializedName("source")
+    private AccountSource source;
+    @SerializedName("fields")
+    private Field[] fields;
 
     public long getId() {
         return id;
@@ -160,4 +167,27 @@ public class Account implements Serializable {
         this.headerStatic = headerStatic;
     }
 
+    public Boolean getBot() {
+        return bot;
+    }
+
+    public void setBot(Boolean bot) {
+        this.bot = bot;
+    }
+
+    public AccountSource getSource() {
+        return source;
+    }
+
+    public void setSource(AccountSource source) {
+        this.source = source;
+    }
+
+    public Field[] getFields() {
+        return fields;
+    }
+
+    public void setFields(Field[] fields) {
+        this.fields = fields;
+    }
 }
