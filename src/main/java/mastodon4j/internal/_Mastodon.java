@@ -10,7 +10,6 @@ import mastodon4j.streaming.PublicStream;
 import mastodon4j.streaming.UserStream;
 
 /**
- *
  * @author hecateball
  */
 public final class _Mastodon implements Mastodon {
@@ -577,24 +576,27 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Response<Status[]> getHomeTimeline() {
-        return this.timelines().getHomeTimeline();
+    public Response<Status[]> getHomeTimeline(
+            Long maxId, Long sinceId, Long limit) {
+        return this.timelines().getHomeTimeline(maxId, sinceId, limit);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Response<Status[]> getPublicTimeline(boolean local) {
-        return this.timelines().getPublicTimeline(local);
+    public Response<Status[]> getPublicTimeline(
+            Boolean local, Boolean onlyMedia, Long maxId, Long sinceId, Long limit) {
+        return this.timelines().getPublicTimeline(local, onlyMedia, maxId, sinceId, limit);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Response<Status[]> getHashtagTimeline(String hashtag, boolean local) {
-        return this.timelines().getHashtagTimeline(hashtag, local);
+    public Response<Status[]> getHashtagTimeline(
+            String hashtag, Boolean local, Boolean onlyMedia, Long maxId, Long sinceId, Long limit) {
+        return this.timelines().getHashtagTimeline(hashtag, local, onlyMedia, maxId, sinceId, limit);
     }
 
 }

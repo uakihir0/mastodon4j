@@ -6,6 +6,7 @@ import mastodon4j.entity.Error;
 import mastodon4j.entity.share.RateLimit;
 import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpException;
+import net.socialhub.http.HttpRequestBuilder;
 import net.socialhub.http.HttpResponse;
 import net.socialhub.http.HttpResponseCode;
 
@@ -65,5 +66,11 @@ class _InternalUtility {
 
     interface RequestInterface<T> {
         HttpResponse proceed() throws HttpException;
+    }
+
+    static void addParam(HttpRequestBuilder builder, String key, Object value) {
+        if (value != null) {
+            builder.param(key, value.toString());
+        }
     }
 }

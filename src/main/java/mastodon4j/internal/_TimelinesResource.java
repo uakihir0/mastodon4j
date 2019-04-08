@@ -6,6 +6,7 @@ import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
 
+import static mastodon4j.internal._InternalUtility.addParam;
 import static mastodon4j.internal._InternalUtility.proceed;
 
 /**
@@ -22,47 +23,81 @@ final class _TimelinesResource implements TimelinesResource {
     }
 
     @Override
-    public Response<Status[]> getHomeTimeline() {
-        //TODO: need to support:local, max_id, since_id, limit
+    public Response<Status[]> getHomeTimeline(
+            Long maxId,
+            Long sinceId,
+            Long limit) {
 
         return proceed(Status[].class, () -> {
 
-            return new HttpRequestBuilder()
-                    .target(this.uri)
-                    .path("/api/v1/timelines/home")
-                    .request(HttpMediaType.APPLICATION_JSON)
-                    .header("Authorization", this.bearerToken)
-                    .get();
+            HttpRequestBuilder builder =
+                    new HttpRequestBuilder()
+                            .target(this.uri)
+                            .path("/api/v1/timelines/home")
+                            .request(HttpMediaType.APPLICATION_JSON)
+                            .header("Authorization", this.bearerToken);
+
+            addParam(builder, "max_id", maxId);
+            addParam(builder, "since_id", sinceId);
+            addParam(builder, "limit", limit);
+
+            return builder.get();
         });
     }
 
     @Override
-    public Response<Status[]> getPublicTimeline(boolean local) {
-        //TODO: need to support:local, max_id, since_id, limit
+    public Response<Status[]> getPublicTimeline(
+            Boolean local,
+            Boolean onlyMedia,
+            Long maxId,
+            Long sinceId,
+            Long limit) {
 
         return proceed(Status[].class, () -> {
 
-            return new HttpRequestBuilder()
-                    .target(this.uri)
-                    .path("/api/v1/timelines/public")
-                    .request(HttpMediaType.APPLICATION_JSON)
-                    .header("Authorization", this.bearerToken)
-                    .get();
+            HttpRequestBuilder builder =
+                    new HttpRequestBuilder()
+                            .target(this.uri)
+                            .path("/api/v1/timelines/public")
+                            .request(HttpMediaType.APPLICATION_JSON)
+                            .header("Authorization", this.bearerToken);
+
+
+            addParam(builder, "local", local);
+            addParam(builder, "only_media", onlyMedia);
+            addParam(builder, "max_id", maxId);
+            addParam(builder, "since_id", sinceId);
+            addParam(builder, "limit", limit);
+
+            return builder.get();
         });
     }
 
     @Override
-    public Response<Status[]> getHashtagTimeline(String hashtag, boolean local) {
-        //TODO: need to support:local, max_id, since_id, limit
+    public Response<Status[]> getHashtagTimeline(
+            String hashtag,
+            Boolean local,
+            Boolean onlyMedia,
+            Long maxId,
+            Long sinceId,
+            Long limit) {
 
         return proceed(Status[].class, () -> {
 
-            return new HttpRequestBuilder()
-                    .target(this.uri)
-                    .path("/api/v1/timelines/tag/{hashtag}")
-                    .request(HttpMediaType.APPLICATION_JSON)
-                    .header("Authorization", this.bearerToken)
-                    .get();
+            HttpRequestBuilder builder =
+                    new HttpRequestBuilder()
+                            .target(this.uri)
+                            .path("/api/v1/timelines/tag/{hashtag}")
+                            .request(HttpMediaType.APPLICATION_JSON)
+                            .header("Authorization", this.bearerToken);
+
+            addParam(builder, "local", local);
+            addParam(builder, "only_media", onlyMedia);
+            addParam(builder, "max_id", maxId);
+            addParam(builder, "since_id", sinceId);
+            addParam(builder, "limit", limit);
+
+            return builder.get();
         });
     }
 
