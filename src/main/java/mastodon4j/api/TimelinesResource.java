@@ -16,6 +16,7 @@ public interface TimelinesResource {
     public Response<Status[]> getHomeTimeline(
             Long maxId,
             Long sinceId,
+            Long minId,
             Long limit);
 
     /**
@@ -29,6 +30,7 @@ public interface TimelinesResource {
             Boolean onlyMedia,
             Long maxId,
             Long sinceId,
+            Long minId,
             Long limit);
 
     /**
@@ -44,5 +46,6 @@ public interface TimelinesResource {
             Boolean onlyMedia,
             Long maxId,
             Long sinceId,
+            Long minId,
             Long limit);
 }

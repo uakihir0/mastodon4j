@@ -26,6 +26,7 @@ final class _TimelinesResource implements TimelinesResource {
     public Response<Status[]> getHomeTimeline(
             Long maxId,
             Long sinceId,
+            Long minId,
             Long limit) {
 
         return proceed(Status[].class, () -> {
@@ -39,6 +40,7 @@ final class _TimelinesResource implements TimelinesResource {
 
             addParam(builder, "max_id", maxId);
             addParam(builder, "since_id", sinceId);
+            addParam(builder, "min_id", minId);
             addParam(builder, "limit", limit);
 
             return builder.get();
@@ -51,6 +53,7 @@ final class _TimelinesResource implements TimelinesResource {
             Boolean onlyMedia,
             Long maxId,
             Long sinceId,
+            Long minId,
             Long limit) {
 
         return proceed(Status[].class, () -> {
@@ -67,6 +70,7 @@ final class _TimelinesResource implements TimelinesResource {
             addParam(builder, "only_media", onlyMedia);
             addParam(builder, "max_id", maxId);
             addParam(builder, "since_id", sinceId);
+            addParam(builder, "min_id", minId);
             addParam(builder, "limit", limit);
 
             return builder.get();
@@ -80,6 +84,7 @@ final class _TimelinesResource implements TimelinesResource {
             Boolean onlyMedia,
             Long maxId,
             Long sinceId,
+            Long minId,
             Long limit) {
 
         return proceed(Status[].class, () -> {
@@ -95,6 +100,7 @@ final class _TimelinesResource implements TimelinesResource {
             addParam(builder, "only_media", onlyMedia);
             addParam(builder, "max_id", maxId);
             addParam(builder, "since_id", sinceId);
+            addParam(builder, "min_id", minId);
             addParam(builder, "limit", limit);
 
             return builder.get();

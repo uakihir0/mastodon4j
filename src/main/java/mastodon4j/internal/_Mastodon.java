@@ -577,8 +577,8 @@ public final class _Mastodon implements Mastodon {
      */
     @Override
     public Response<Status[]> getHomeTimeline(
-            Long maxId, Long sinceId, Long limit) {
-        return this.timelines().getHomeTimeline(maxId, sinceId, limit);
+            Long maxId, Long sinceId, Long minId, Long limit) {
+        return this.timelines().getHomeTimeline(maxId, sinceId, minId, limit);
     }
 
     /**
@@ -586,8 +586,8 @@ public final class _Mastodon implements Mastodon {
      */
     @Override
     public Response<Status[]> getPublicTimeline(
-            Boolean local, Boolean onlyMedia, Long maxId, Long sinceId, Long limit) {
-        return this.timelines().getPublicTimeline(local, onlyMedia, maxId, sinceId, limit);
+            Boolean local, Boolean onlyMedia, Long maxId, Long sinceId, Long minId, Long limit) {
+        return this.timelines().getPublicTimeline(local, onlyMedia, maxId, sinceId, minId, limit);
     }
 
     /**
@@ -595,8 +595,8 @@ public final class _Mastodon implements Mastodon {
      */
     @Override
     public Response<Status[]> getHashtagTimeline(
-            String hashtag, Boolean local, Boolean onlyMedia, Long maxId, Long sinceId, Long limit) {
-        return this.timelines().getHashtagTimeline(hashtag, local, onlyMedia, maxId, sinceId, limit);
+            String hashtag, Boolean local, Boolean onlyMedia, Long maxId, Long sinceId, Long minId, Long limit) {
+        return this.timelines().getHashtagTimeline(hashtag, local, onlyMedia, maxId, sinceId, minId, limit);
     }
 
 }
