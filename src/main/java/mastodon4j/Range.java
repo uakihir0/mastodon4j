@@ -8,11 +8,13 @@ import java.util.Optional;
 public final class Range {
 
     private Optional<Long> maxId;
+    private Optional<Long> minId;
     private Optional<Long> sinceId;
     private Optional<Long> limit;
 
     public Range() {
         this.maxId = Optional.empty();
+        this.minId = Optional.empty();
         this.sinceId = Optional.empty();
         this.limit = Optional.empty();
     }
@@ -23,6 +25,14 @@ public final class Range {
 
     public void setMaxId(long maxId) {
         this.maxId = Optional.of(maxId);
+    }
+
+    public Optional<Long> getMinId() {
+        return minId;
+    }
+
+    public void setMinId(long minId) {
+        this.minId = Optional.of(minId);
     }
 
     public Optional<Long> getSinceId() {

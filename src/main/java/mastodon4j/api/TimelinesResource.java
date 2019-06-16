@@ -1,5 +1,6 @@
 package mastodon4j.api;
 
+import mastodon4j.Range;
 import mastodon4j.entity.Status;
 import mastodon4j.entity.share.Response;
 
@@ -14,10 +15,7 @@ public interface TimelinesResource {
      * @return an array of Statuses, most recent ones first
      */
     public Response<Status[]> getHomeTimeline(
-            Long maxId,
-            Long sinceId,
-            Long minId,
-            Long limit);
+            Range range);
 
     /**
      * Retrieving a public timeline.
@@ -28,10 +26,7 @@ public interface TimelinesResource {
     public Response<Status[]> getPublicTimeline(
             Boolean local,
             Boolean onlyMedia,
-            Long maxId,
-            Long sinceId,
-            Long minId,
-            Long limit);
+            Range range);
 
     /**
      * Retrieving a tag timeline.
@@ -44,8 +39,5 @@ public interface TimelinesResource {
             String hashtag,
             Boolean local,
             Boolean onlyMedia,
-            Long maxId,
-            Long sinceId,
-            Long minId,
-            Long limit);
+            Range range);
 }

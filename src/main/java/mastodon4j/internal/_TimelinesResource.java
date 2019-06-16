@@ -1,5 +1,6 @@
 package mastodon4j.internal;
 
+import mastodon4j.Range;
 import mastodon4j.api.TimelinesResource;
 import mastodon4j.entity.Status;
 import mastodon4j.entity.share.Response;
@@ -24,10 +25,7 @@ final class _TimelinesResource implements TimelinesResource {
 
     @Override
     public Response<Status[]> getHomeTimeline(
-            Long maxId,
-            Long sinceId,
-            Long minId,
-            Long limit) {
+            Range range) {
 
         return proceed(Status[].class, () -> {
 
@@ -38,10 +36,20 @@ final class _TimelinesResource implements TimelinesResource {
                             .request(HttpMediaType.APPLICATION_JSON)
                             .header("Authorization", this.bearerToken);
 
-            addParam(builder, "max_id", maxId);
-            addParam(builder, "since_id", sinceId);
-            addParam(builder, "min_id", minId);
-            addParam(builder, "limit", limit);
+            if (range != null) {
+                if (range.getLimit().isPresent()) {
+                    builder.query("limit", range.getLimit().get());
+                }
+                if (range.getSinceId().isPresent()) {
+                    builder.query("since_id", range.getSinceId().get());
+                }
+                if (range.getMaxId().isPresent()) {
+                    builder.query("max_id", range.getMaxId().get());
+                }
+                if (range.getMinId().isPresent()) {
+                    builder.query("min_id", range.getMinId().get());
+                }
+            }
 
             return builder.get();
         });
@@ -51,10 +59,7 @@ final class _TimelinesResource implements TimelinesResource {
     public Response<Status[]> getPublicTimeline(
             Boolean local,
             Boolean onlyMedia,
-            Long maxId,
-            Long sinceId,
-            Long minId,
-            Long limit) {
+            Range range) {
 
         return proceed(Status[].class, () -> {
 
@@ -68,10 +73,21 @@ final class _TimelinesResource implements TimelinesResource {
 
             addParam(builder, "local", local);
             addParam(builder, "only_media", onlyMedia);
-            addParam(builder, "max_id", maxId);
-            addParam(builder, "since_id", sinceId);
-            addParam(builder, "min_id", minId);
-            addParam(builder, "limit", limit);
+
+            if (range != null) {
+                if (range.getLimit().isPresent()) {
+                    builder.query("limit", range.getLimit().get());
+                }
+                if (range.getSinceId().isPresent()) {
+                    builder.query("since_id", range.getSinceId().get());
+                }
+                if (range.getMaxId().isPresent()) {
+                    builder.query("max_id", range.getMaxId().get());
+                }
+                if (range.getMinId().isPresent()) {
+                    builder.query("min_id", range.getMinId().get());
+                }
+            }
 
             return builder.get();
         });
@@ -82,10 +98,7 @@ final class _TimelinesResource implements TimelinesResource {
             String hashtag,
             Boolean local,
             Boolean onlyMedia,
-            Long maxId,
-            Long sinceId,
-            Long minId,
-            Long limit) {
+            Range range) {
 
         return proceed(Status[].class, () -> {
 
@@ -98,10 +111,21 @@ final class _TimelinesResource implements TimelinesResource {
 
             addParam(builder, "local", local);
             addParam(builder, "only_media", onlyMedia);
-            addParam(builder, "max_id", maxId);
-            addParam(builder, "since_id", sinceId);
-            addParam(builder, "min_id", minId);
-            addParam(builder, "limit", limit);
+
+            if (range != null) {
+                if (range.getLimit().isPresent()) {
+                    builder.query("limit", range.getLimit().get());
+                }
+                if (range.getSinceId().isPresent()) {
+                    builder.query("since_id", range.getSinceId().get());
+                }
+                if (range.getMaxId().isPresent()) {
+                    builder.query("max_id", range.getMaxId().get());
+                }
+                if (range.getMinId().isPresent()) {
+                    builder.query("min_id", range.getMinId().get());
+                }
+            }
 
             return builder.get();
         });

@@ -1,5 +1,6 @@
 package mastodon4j.internal;
 
+import mastodon4j.Page;
 import mastodon4j.api.SearchResource;
 import mastodon4j.entity.Results;
 import mastodon4j.entity.share.Response;
@@ -20,16 +21,33 @@ final class _SearchResource implements SearchResource {
     }
 
     @Override
-    public Response<Results> search(String query, boolean resolve) {
+    public Response<Results> search(
+            String query,
+            boolean resolve,
+            boolean onlyFollowing,
+            Page page) {
+
         return proceed(Results.class, () -> {
 
-            return new HttpRequestBuilder()
-                    .target(this.uri)
-                    .path("/api/v1/search")
-                    .query("q", query)
-                    .query("resolve", resolve)
-                    .request(HttpMediaType.APPLICATION_JSON)
-                    .get();
+            HttpRequestBuilder builder =
+                    new HttpRequestBuilder()
+                            .target(this.uri)
+                            .path("/api/v2/search")
+                            .query("q", query)
+                            .query("resolve", resolve)
+                            .query("following", onlyFollowing)
+                            .request(HttpMediaType.APPLICATION_JSON);
+
+            if (page != null) {
+                if (page.getLimit().isPresent()) {
+                    builder.query("limit", page.getLimit().get());
+                }
+                if (page.getOffset().isPresent()) {
+                    builder.query("offset", page.getOffset().get());
+                }
+            }
+
+            return builder.get();
         });
     }
 

@@ -110,6 +110,9 @@ final class _AccountsResource implements AccountsResource {
                 if (range.getMaxId().isPresent()) {
                     build.query("max_id", range.getMaxId().get());
                 }
+                if (range.getMinId().isPresent()) {
+                    build.query("min_id", range.getMinId().get());
+                }
             }
 
             return build
@@ -146,6 +149,9 @@ final class _AccountsResource implements AccountsResource {
                 if (range.getMaxId().isPresent()) {
                     build.query("max_id", range.getMaxId().get());
                 }
+                if (range.getMinId().isPresent()) {
+                    build.query("min_id", range.getMinId().get());
+                }
             }
 
             return build
@@ -160,7 +166,7 @@ final class _AccountsResource implements AccountsResource {
      */
     @Override
     public Response<Status[]> getStatuses(long id) {
-        return this.getStatuses(id, false, false, null);
+        return this.getStatuses(id, false, false, false, false, null);
     }
 
     /**
@@ -168,26 +174,40 @@ final class _AccountsResource implements AccountsResource {
      */
     @Override
     public Response<Status[]> getStatuses(long id, Range range) {
-        return this.getStatuses(id, false, false, range);
+        return this.getStatuses(id, false, false, false, false, range);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Response<Status[]> getStatuses(long id, boolean onlyMedia, boolean excluedeReplies, Range range) {
+    public Response<Status[]> getStatuses(
+            long id,
+            boolean onlyPinned,
+            boolean onlyMedia,
+            boolean excluedeReplies,
+            boolean excludeReblogs,
+            Range range) {
+
         return proceed(Status[].class, () -> {
 
-            HttpRequestBuilder build = new HttpRequestBuilder()
-                    .target(this.uri)
-                    .path("/api/v1/accounts/{id}/statuses")
-                    .pathValue("id", String.valueOf(id));
+            HttpRequestBuilder build =
+                    new HttpRequestBuilder()
+                            .target(this.uri)
+                            .path("/api/v1/accounts/{id}/statuses")
+                            .pathValue("id", String.valueOf(id));
 
             if (onlyMedia) {
                 build.query("only_media", onlyMedia);
             }
+            if (onlyPinned) {
+                build.query("pinned", onlyPinned);
+            }
             if (excluedeReplies) {
                 build.query("exclude_replies", excluedeReplies);
+            }
+            if (excludeReblogs) {
+                build.query("exclude_reblogs", excludeReblogs);
             }
             if (range != null) {
                 if (range.getLimit().isPresent()) {
@@ -198,6 +218,9 @@ final class _AccountsResource implements AccountsResource {
                 }
                 if (range.getMaxId().isPresent()) {
                     build.query("max_id", range.getMaxId().get());
+                }
+                if (range.getMinId().isPresent()) {
+                    build.query("min_id", range.getMinId().get());
                 }
             }
 

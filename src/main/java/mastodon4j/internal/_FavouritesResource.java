@@ -45,6 +45,9 @@ final class _FavouritesResource implements FavouritesResource {
                 if (range.getMaxId().isPresent()) {
                     builder.query("max_id", range.getMaxId().get());
                 }
+                if (range.getMinId().isPresent()) {
+                    builder.query("min_id", range.getMinId().get());
+                }
             }
 
             return builder

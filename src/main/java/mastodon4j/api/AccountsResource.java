@@ -7,7 +7,6 @@ import mastodon4j.entity.Status;
 import mastodon4j.entity.share.Response;
 
 /**
- *
  * @author hecateball
  */
 public interface AccountsResource {
@@ -23,11 +22,11 @@ public interface AccountsResource {
      * Updating the current user.
      *
      * @param displayName the name to display in the user's profile
-     * @param note a new biography for the user
-     * @param avatar a base64 encoded image to display as the user's avatar (e.g.
-     * data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAADrCAYAAAA...)
-     * @param header a base64 encoded image to display as the user's header image (e.g.
-     * data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAADrCAYAAAA...)
+     * @param note        a new biography for the user
+     * @param avatar      a base64 encoded image to display as the user's avatar (e.g.
+     *                    data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAADrCAYAAAA...)
+     * @param header      a base64 encoded image to display as the user's header image (e.g.
+     *                    data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAADrCAYAAAA...)
      * @return the updated Account
      */
     public Response<Account> updateCredentials(String displayName, String note, String avatar, String header);
@@ -94,13 +93,15 @@ public interface AccountsResource {
     /**
      * Getting an account's statuses.
      *
-     * @param id
-     * @param onlyMedia
-     * @param excluedeReplies
-     * @param range
      * @return an array of Statuses
      */
-    public Response<Status[]> getStatuses(long id, boolean onlyMedia, boolean excluedeReplies, Range range);
+    public Response<Status[]> getStatuses(
+            long id,
+            boolean onlyPinned,
+            boolean onlyMedia,
+            boolean excluedeReplies,
+            boolean excludeReblogs,
+            Range range);
 
     /**
      * Following an account.

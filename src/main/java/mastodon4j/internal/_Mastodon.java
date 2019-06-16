@@ -1,6 +1,7 @@
 package mastodon4j.internal;
 
 import mastodon4j.Mastodon;
+import mastodon4j.Page;
 import mastodon4j.Range;
 import mastodon4j.api.*;
 import mastodon4j.entity.*;
@@ -8,6 +9,8 @@ import mastodon4j.entity.share.Response;
 import mastodon4j.streaming.HashtagStream;
 import mastodon4j.streaming.PublicStream;
 import mastodon4j.streaming.UserStream;
+
+import java.util.List;
 
 /**
  * @author hecateball
@@ -206,8 +209,21 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Response<Status[]> getStatuses(long id, boolean onlyMedia, boolean excluedeReplies, Range range) {
-        return this.accounts().getStatuses(id, onlyMedia, excluedeReplies, range);
+    public Response<Status[]> getStatuses(
+            long id,
+            boolean onlyPinned,
+            boolean onlyMedia,
+            boolean excluedeReplies,
+            boolean excludeReblogs,
+            Range range) {
+
+        return this.accounts().getStatuses(
+                id,
+                onlyPinned,
+                onlyMedia,
+                excluedeReplies,
+                excludeReblogs,
+                range);
     }
 
     /**
@@ -376,8 +392,15 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Response<Notification[]> getNotifications() {
-        return this.notifications().getNotifications();
+    public Response<Notification[]> getNotifications(
+            Range range,
+            List<String> excludeTypes,
+            Long id) {
+
+        return this.notifications().getNotifications(
+                range,
+                excludeTypes,
+                id);
     }
 
     /**
@@ -440,8 +463,17 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Response<Results> search(String query, boolean resolve) {
-        return this.search().search(query, resolve);
+    public Response<Results> search(
+            String query,
+            boolean resolve,
+            boolean onlyFollowing,
+            Page page) {
+
+        return this.search().search(
+                query,
+                resolve,
+                onlyFollowing,
+                page);
     }
 
     /**
@@ -577,8 +609,8 @@ public final class _Mastodon implements Mastodon {
      */
     @Override
     public Response<Status[]> getHomeTimeline(
-            Long maxId, Long sinceId, Long minId, Long limit) {
-        return this.timelines().getHomeTimeline(maxId, sinceId, minId, limit);
+            Range range) {
+        return this.timelines().getHomeTimeline(range);
     }
 
     /**
@@ -586,8 +618,8 @@ public final class _Mastodon implements Mastodon {
      */
     @Override
     public Response<Status[]> getPublicTimeline(
-            Boolean local, Boolean onlyMedia, Long maxId, Long sinceId, Long minId, Long limit) {
-        return this.timelines().getPublicTimeline(local, onlyMedia, maxId, sinceId, minId, limit);
+            Boolean local, Boolean onlyMedia, Range range) {
+        return this.timelines().getPublicTimeline(local, onlyMedia, range);
     }
 
     /**
@@ -595,8 +627,8 @@ public final class _Mastodon implements Mastodon {
      */
     @Override
     public Response<Status[]> getHashtagTimeline(
-            String hashtag, Boolean local, Boolean onlyMedia, Long maxId, Long sinceId, Long minId, Long limit) {
-        return this.timelines().getHashtagTimeline(hashtag, local, onlyMedia, maxId, sinceId, minId, limit);
+            String hashtag, Boolean local, Boolean onlyMedia, Range range) {
+        return this.timelines().getHashtagTimeline(hashtag, local, onlyMedia, range);
     }
 
 }
