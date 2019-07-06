@@ -9,17 +9,17 @@ import java.io.Serializable;
  */
 public class Context implements Serializable {
 
-    @SerializedName("statuses")
-    private Status[] statuses;
+    @SerializedName("ancestors")
+    private Status[] ancestors;
     @SerializedName("descendants")
     private Status[] descendants;
 
-    public Status[] getStatuses() {
-        return statuses;
+    public Status[] getAncestors() {
+        return ancestors;
     }
 
-    public void setStatuses(Status[] statuses) {
-        this.statuses = statuses;
+    public void setAncestors(Status[] ancestors) {
+        this.ancestors = ancestors;
     }
 
     public Status[] getDescendants() {
@@ -29,5 +29,4 @@ public class Context implements Serializable {
     public void setDescendants(Status[] descendants) {
         this.descendants = descendants;
     }
-
 }
