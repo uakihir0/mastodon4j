@@ -106,6 +106,7 @@ final class _TimelinesResource implements TimelinesResource {
                     new HttpRequestBuilder()
                             .target(this.uri)
                             .path("/api/v1/timelines/tag/{hashtag}")
+                            .pathValue("hashtag", hashtag)
                             .request(HttpMediaType.APPLICATION_JSON)
                             .header("Authorization", this.bearerToken);
 
