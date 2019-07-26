@@ -13,6 +13,8 @@ public class Tag implements Serializable {
     private String name;
     @SerializedName("url")
     private String url;
+    @SerializedName("history")
+    private History[] history;
 
     public String getName() {
         return name;
@@ -30,4 +32,11 @@ public class Tag implements Serializable {
         this.url = url;
     }
 
+    public History[] getHistory() {
+        return history;
+    }
+
+    public void setHistory(History[] history) {
+        this.history = history;
+    }
 }

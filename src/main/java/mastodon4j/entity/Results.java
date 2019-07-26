@@ -14,7 +14,7 @@ public class Results implements Serializable {
     @SerializedName("statuses")
     private Status[] statuses;
     @SerializedName("hashtags")
-    private String[] hashtags;
+    private Tag[] hashtags;
 
     public Account[] getAccounts() {
         return accounts;
@@ -32,11 +32,11 @@ public class Results implements Serializable {
         this.statuses = statuses;
     }
 
-    public String[] getHashtags() {
+    public Tag[] getHashtags() {
         return hashtags;
     }
 
-    public void setHashtags(String[] hashtags) {
+    public void setHashtags(Tag[] hashtags) {
         this.hashtags = hashtags;
     }
 
