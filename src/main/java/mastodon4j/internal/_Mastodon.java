@@ -47,7 +47,7 @@ public final class _Mastodon implements Mastodon {
         this.notifications = new _NotificationsResource(uri, accessToken);
         this.oauth = new _OauthResource(uri);
         this.reports = new _ReportsResource(uri, accessToken);
-        this.search = new _SearchResource(uri);
+        this.search = new _SearchResource(uri, accessToken);
         this.statuses = new _StatusesResource(uri, accessToken);
         this.streaming = new _StreamingResource(uri, accessToken);
         this.timelines = new _TimelinesResource(uri, accessToken);

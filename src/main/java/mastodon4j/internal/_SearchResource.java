@@ -15,9 +15,11 @@ import static mastodon4j.internal._InternalUtility.proceed;
 final class _SearchResource implements SearchResource {
 
     private final String uri;
+    private final String bearerToken;
 
-    _SearchResource(String uri) {
+    _SearchResource(String uri, String accessToken) {
         this.uri = uri;
+        this.bearerToken = _InternalUtility.getBearerToken(accessToken);
     }
 
     @Override
@@ -36,6 +38,7 @@ final class _SearchResource implements SearchResource {
                             .query("q", query)
                             .query("resolve", resolve)
                             .query("following", onlyFollowing)
+                            .header("Authorization", this.bearerToken)
                             .request(HttpMediaType.APPLICATION_JSON);
 
             if (page != null) {
