@@ -10,6 +10,8 @@ import net.socialhub.http.HttpRequestBuilder;
 import net.socialhub.http.HttpResponse;
 import net.socialhub.http.HttpResponseCode;
 
+import java.net.URLEncoder;
+
 /**
  * @author hecateball
  */
@@ -71,6 +73,14 @@ class _InternalUtility {
     static void addParam(HttpRequestBuilder builder, String key, Object value) {
         if (value != null) {
             builder.param(key, value.toString());
+        }
+    }
+
+    static String encode(String str) {
+        try {
+            return URLEncoder.encode(str, "utf-8");
+        } catch (Exception e) {
+            return str;
         }
     }
 }
