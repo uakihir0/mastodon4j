@@ -1,5 +1,7 @@
 package mastodon4j.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -7,10 +9,11 @@ import java.io.Serializable;
  */
 public class History implements Serializable {
 
+    @SerializedName("day")
     private String day;
-
+    @SerializedName("uses")
     private Long uses;
-
+    @SerializedName("accounts")
     private Long accounts;
 
     public String getDay() {
