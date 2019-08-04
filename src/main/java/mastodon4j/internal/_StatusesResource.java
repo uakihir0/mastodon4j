@@ -5,9 +5,12 @@ import mastodon4j.entity.Account;
 import mastodon4j.entity.Card;
 import mastodon4j.entity.Context;
 import mastodon4j.entity.Status;
+import mastodon4j.entity.request.StatusUpdate;
 import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
+
+import java.util.stream.Collectors;
 
 import static mastodon4j.internal._InternalUtility.proceed;
 
@@ -94,26 +97,34 @@ final class _StatusesResource implements StatusesResource {
     }
 
     @Override
-    public Response<Status> postStatus(Status status) {
+    public Response<Status> postStatus(StatusUpdate status) {
         return proceed(Status.class, () -> {
 
-            //TODO: support media_ids
             HttpRequestBuilder builder = new HttpRequestBuilder()
                     .target(this.uri)
                     .path("/api/v1/statuses");
 
             builder.param("status", status.getContent());
+
             if (status.getInReplyToId() != null) {
                 builder.param("in_reply_to_id", String.valueOf(status.getInReplyToId()));
             }
-            if (status.isSensitive()) {
+
+            if (status.getSensitive() != null && status.getSensitive()) {
                 builder.param("sensitive", "true");
             }
+
             if (status.getSpoilerText() != null && !status.getSpoilerText().isEmpty()) {
                 builder.param("spoiler_text", status.getSpoilerText());
             }
+
             if (status.getVisibility() != null && !status.getVisibility().isEmpty()) {
                 builder.param("visibility", status.getVisibility());
+            }
+
+            if (status.getMediaIds() != null && !status.getMediaIds().isEmpty()) {
+                builder.param("media_ids", status.getMediaIds().stream() //
+                        .map(String::valueOf).collect(Collectors.joining(",")));
             }
 
             return builder.request(HttpMediaType.APPLICATION_JSON)

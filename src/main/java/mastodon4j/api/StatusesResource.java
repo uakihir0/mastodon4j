@@ -4,10 +4,10 @@ import mastodon4j.entity.Account;
 import mastodon4j.entity.Card;
 import mastodon4j.entity.Context;
 import mastodon4j.entity.Status;
+import mastodon4j.entity.request.StatusUpdate;
 import mastodon4j.entity.share.Response;
 
 /**
- *
  * @author hecateball
  */
 public interface StatusesResource {
@@ -58,7 +58,7 @@ public interface StatusesResource {
      * @param status
      * @return the new Status.
      */
-    public Response<Status> postStatus(Status status);
+    public Response<Status> postStatus(StatusUpdate status);
 
     /**
      * Deleting a status.

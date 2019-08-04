@@ -5,6 +5,7 @@ import mastodon4j.Page;
 import mastodon4j.Range;
 import mastodon4j.api.*;
 import mastodon4j.entity.*;
+import mastodon4j.entity.request.StatusUpdate;
 import mastodon4j.entity.share.Response;
 import mastodon4j.streaming.HashtagStream;
 import mastodon4j.streaming.PublicStream;
@@ -530,7 +531,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Response<Status> postStatus(Status status) {
+    public Response<Status> postStatus(StatusUpdate status) {
         return this.statuses().postStatus(status);
     }
 
