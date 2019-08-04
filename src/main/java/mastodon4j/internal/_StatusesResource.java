@@ -104,7 +104,9 @@ final class _StatusesResource implements StatusesResource {
                     .target(this.uri)
                     .path("/api/v1/statuses");
 
-            builder.param("status", status.getContent());
+            if (status.getContent() != null && !status.getContent().isEmpty()) {
+                builder.param("status", status.getContent());
+            }
 
             if (status.getInReplyToId() != null) {
                 builder.param("in_reply_to_id", String.valueOf(status.getInReplyToId()));
@@ -123,7 +125,7 @@ final class _StatusesResource implements StatusesResource {
             }
 
             if (status.getMediaIds() != null && !status.getMediaIds().isEmpty()) {
-                builder.param("media_ids", status.getMediaIds().stream() //
+                builder.param("media_ids[]", status.getMediaIds().stream() //
                         .map(String::valueOf).collect(Collectors.joining(",")));
             }
 
