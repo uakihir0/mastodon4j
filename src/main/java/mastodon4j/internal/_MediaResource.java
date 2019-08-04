@@ -25,13 +25,14 @@ final class _MediaResource implements MediaResource {
     }
 
     @Override
-    public Response<Attachment> postMedia(InputStream stream, String name) {
+    public Response<Attachment> postMedia(InputStream stream, String name, String description) {
         return proceed(Attachment.class, () -> {
 
             return new HttpRequestBuilder()
                     .target(this.uri)
                     .path("/api/v1/media")
-                    .file("media", stream, name)
+                    .file("file", stream, name)
+                    .param("description", description)
                     .request(HttpMediaType.APPLICATION_JSON)
                     .header("Authorization", this.bearerToken)
                     .post();
@@ -39,13 +40,14 @@ final class _MediaResource implements MediaResource {
     }
 
     @Override
-    public Response<Attachment> postMedia(File file) {
+    public Response<Attachment> postMedia(File file, String description) {
         return proceed(Attachment.class, () -> {
 
             return new HttpRequestBuilder()
                     .target(this.uri)
                     .path("/api/v1/media")
-                    .file("media", file)
+                    .file("file", file)
+                    .param("description", description)
                     .request(HttpMediaType.APPLICATION_JSON)
                     .header("Authorization", this.bearerToken)
                     .post();

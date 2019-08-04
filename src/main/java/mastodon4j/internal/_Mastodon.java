@@ -379,16 +379,16 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Response<Attachment> postMedia(InputStream stream, String name) {
-        return this.media().postMedia(stream, name);
+    public Response<Attachment> postMedia(InputStream stream, String name, String description) {
+        return this.media().postMedia(stream, name, description);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Response<Attachment> postMedia(File file) {
-        return this.media().postMedia(file);
+    public Response<Attachment> postMedia(File file, String description) {
+        return this.media().postMedia(file, description);
     }
 
     /**
@@ -404,14 +404,10 @@ public final class _Mastodon implements Mastodon {
      */
     @Override
     public Response<Notification[]> getNotifications(
-            Range range,
-            List<String> excludeTypes,
-            Long id) {
+            Range range, List<String> excludeTypes, Long id) {
 
         return this.notifications().getNotifications(
-                range,
-                excludeTypes,
-                id);
+                range, excludeTypes, id);
     }
 
     /**
@@ -475,16 +471,10 @@ public final class _Mastodon implements Mastodon {
      */
     @Override
     public Response<Results> search(
-            String query,
-            boolean resolve,
-            boolean onlyFollowing,
-            Page page) {
+            String query, boolean resolve, boolean onlyFollowing, Page page) {
 
         return this.search().search(
-                query,
-                resolve,
-                onlyFollowing,
-                page);
+                query, resolve, onlyFollowing, page);
     }
 
     /**
