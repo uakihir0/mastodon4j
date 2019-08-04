@@ -10,6 +10,8 @@ import mastodon4j.streaming.HashtagStream;
 import mastodon4j.streaming.PublicStream;
 import mastodon4j.streaming.UserStream;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -376,7 +378,15 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Response<Attachment> postMedia(String file) {
+    public Response<Attachment> postMedia(InputStream stream, String name) {
+        return this.media().postMedia(stream, name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Response<Attachment> postMedia(File file) {
         return this.media().postMedia(file);
     }
 
