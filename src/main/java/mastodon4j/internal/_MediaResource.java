@@ -28,12 +28,17 @@ final class _MediaResource implements MediaResource {
     public Response<Attachment> postMedia(InputStream stream, String name, String description) {
         return proceed(Attachment.class, () -> {
 
-            return new HttpRequestBuilder()
-                    .target(this.uri)
-                    .path("/api/v1/media")
-                    .file("file", stream, name)
-                    .param("description", description)
-                    .request(HttpMediaType.APPLICATION_JSON)
+            HttpRequestBuilder builder =
+                    new HttpRequestBuilder()
+                            .target(this.uri)
+                            .path("/api/v1/media")
+                            .file("file", stream, name);
+
+            if (description != null && !description.isEmpty()) {
+                builder.param("description", description);
+            }
+
+            return builder.request(HttpMediaType.APPLICATION_JSON)
                     .header("Authorization", this.bearerToken)
                     .post();
         });
@@ -43,12 +48,17 @@ final class _MediaResource implements MediaResource {
     public Response<Attachment> postMedia(File file, String description) {
         return proceed(Attachment.class, () -> {
 
-            return new HttpRequestBuilder()
-                    .target(this.uri)
-                    .path("/api/v1/media")
-                    .file("file", file)
-                    .param("description", description)
-                    .request(HttpMediaType.APPLICATION_JSON)
+            HttpRequestBuilder builder =
+                    new HttpRequestBuilder()
+                            .target(this.uri)
+                            .path("/api/v1/media")
+                            .file("file", file);
+
+            if (description != null && !description.isEmpty()) {
+                builder.param("description", description);
+            }
+
+            return builder.request(HttpMediaType.APPLICATION_JSON)
                     .header("Authorization", this.bearerToken)
                     .post();
         });
