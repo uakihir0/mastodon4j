@@ -21,7 +21,7 @@ final class _NotificationsResource implements NotificationsResource {
 
     _NotificationsResource(String uri, String accessToken) {
         this.uri = uri;
-        this.bearerToken = accessToken;
+        this.bearerToken = _InternalUtility.getBearerToken(accessToken);
     }
 
     @Override
