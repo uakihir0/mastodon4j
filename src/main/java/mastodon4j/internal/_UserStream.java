@@ -74,7 +74,7 @@ final class _UserStream implements UserStream {
                     throw new MastodonException(e);
                 }
             });
-            thread.run();
+            thread.start();
             isOpen = true;
         }
     }

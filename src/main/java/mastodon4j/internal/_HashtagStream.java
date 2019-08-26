@@ -74,7 +74,7 @@ final class _HashtagStream implements HashtagStream {
                     throw new MastodonException(e);
                 }
             });
-            thread.run();
+            thread.start();
             isOpen = true;
         }
     }

@@ -73,7 +73,7 @@ final class _PublicStream implements PublicStream {
                     throw new MastodonException(e);
                 }
             });
-            thread.run();
+            thread.start();
             isOpen = true;
         }
     }
