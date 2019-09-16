@@ -1,8 +1,12 @@
 package mastodon4j.internal;
 
+import net.socialhub.logger.Logger;
+
 import java.util.function.Consumer;
 
 public class _StreamEvent {
+
+    private static final Logger LOGGER = Logger.getLogger(_StreamEvent.class);
 
     private final Consumer<_StreamModel> consumer;
 
@@ -40,7 +44,7 @@ public class _StreamEvent {
             String data = trim.substring(start, end);
 
             event.setData(data.trim());
-            System.out.println(event.getData());
+            LOGGER.debug(event.getData());
             consumer.accept(event);
             event = null;
             return;
