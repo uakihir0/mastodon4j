@@ -7,7 +7,7 @@ import mastodon4j.api.*;
  */
 public interface Mastodon extends AccountsResource, AppsResource, BlocksResource, FavouritesResource,
         FollowRequestsResource, FollowsResource, InstancesResource, MediaResource, MutesResource, NotificationsResource,
-        OauthResource, ReportsResource, SearchResource, StatusesResource, StreamingResource, TimelinesResource {
+        OauthResource, ReportsResource, SearchResource, StatusesResource, StreamingResource, TimelinesResource, ListsResource {
 
     public AccountsResource accounts();
 
@@ -40,4 +40,6 @@ public interface Mastodon extends AccountsResource, AppsResource, BlocksResource
     public StreamingResource streaming();
 
     public TimelinesResource timelines();
+
+    public ListsResource list();
 }

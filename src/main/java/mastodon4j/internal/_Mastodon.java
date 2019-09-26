@@ -36,6 +36,7 @@ public final class _Mastodon implements Mastodon {
     private final StatusesResource statuses;
     private final StreamingResource streaming;
     private final TimelinesResource timelines;
+    private final ListsResource list;
 
     public _Mastodon(String uri, String accessToken) {
         this.accounts = new _AccountsResource(uri, accessToken);
@@ -54,6 +55,7 @@ public final class _Mastodon implements Mastodon {
         this.statuses = new _StatusesResource(uri, accessToken);
         this.streaming = new _StreamingResource(uri, accessToken);
         this.timelines = new _TimelinesResource(uri, accessToken);
+        this.list = new _ListsResource(uri, accessToken);
     }
 
     @Override
@@ -134,6 +136,11 @@ public final class _Mastodon implements Mastodon {
     @Override
     public TimelinesResource timelines() {
         return this.timelines;
+    }
+
+    @Override
+    public ListsResource list() {
+        return this.list;
     }
 
     /**
@@ -632,4 +639,75 @@ public final class _Mastodon implements Mastodon {
         return this.timelines().getHashtagTimeline(hashtag, local, onlyMedia, range);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Response<mastodon4j.entity.List[]> getLists() {
+        return this.list.getLists();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Response<mastodon4j.entity.List[]> getLists(long id) {
+        return this.list.getLists(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Response<Account[]> getListAccounts(String id, Long limit) {
+        return this.getListAccounts(id, limit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Response<mastodon4j.entity.List> getList(String id) {
+        return this.getList(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Response<mastodon4j.entity.List> createList(String title) {
+        return this.list.createList(title);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Response<mastodon4j.entity.List> updateList(String id, String title) {
+        return this.list.updateList(id, title);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteList(String id) {
+        this.list.deleteList(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addAccountsToList(String id, long[] accountIds) {
+        this.list.addAccountsToList(id, accountIds);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteAccountsToList(String id, long[] accountIds) {
+        this.list.deleteAccountsToList(id, accountIds);
+    }
 }
