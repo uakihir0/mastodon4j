@@ -643,6 +643,14 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
+    public Response<Status[]> getListTimeline(String listId, Range range) {
+        return this.timelines().getListTimeline(listId, range);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Response<mastodon4j.entity.List[]> getLists() {
         return this.list.getLists();
     }
