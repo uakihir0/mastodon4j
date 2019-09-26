@@ -17,9 +17,9 @@ public interface ListsResource {
     public Response<List[]> getLists();
 
     /**
-     * Fetching the target account's lists.
+     * Fetching the user's lists that a given account is part of.
      *
-     * @param id the target account's id
+     * @param id the account's id
      * @return an array of Lists created by the target user
      */
     public Response<List[]> getLists(long id);
