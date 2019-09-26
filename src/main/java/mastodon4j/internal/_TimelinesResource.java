@@ -132,4 +132,38 @@ final class _TimelinesResource implements TimelinesResource {
         });
     }
 
+    @Override
+    public Response<Status[]> getListTimeline(
+            String listId,
+            Range range) {
+
+        return proceed(Status[].class, () -> {
+
+            HttpRequestBuilder builder =
+                    new HttpRequestBuilder()
+                            .target(this.uri)
+                            .path("/api/v1/timelines/list/{listId}")
+                            .pathValue("listId", listId)
+                            .request(HttpMediaType.APPLICATION_JSON)
+                            .header("Authorization", this.bearerToken);
+
+            if (range != null) {
+                if (range.getLimit().isPresent()) {
+                    builder.query("limit", range.getLimit().get());
+                }
+                if (range.getSinceId().isPresent()) {
+                    builder.query("since_id", range.getSinceId().get());
+                }
+                if (range.getMaxId().isPresent()) {
+                    builder.query("max_id", range.getMaxId().get());
+                }
+                if (range.getMinId().isPresent()) {
+                    builder.query("min_id", range.getMinId().get());
+                }
+            }
+
+            return builder.get();
+        });
+    }
+
 }

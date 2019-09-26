@@ -40,4 +40,14 @@ public interface TimelinesResource {
             Boolean local,
             Boolean onlyMedia,
             Range range);
+
+    /**
+     * Retrieving a list timeline.
+     *
+     * @param listId
+     * @return an array of Statuses, most recent ones first
+     */
+    public Response<Status[]> getListTimeline(
+            String listId,
+            Range range);
 }
