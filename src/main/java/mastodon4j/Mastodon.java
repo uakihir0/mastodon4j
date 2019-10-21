@@ -1,13 +1,31 @@
 package mastodon4j;
 
-import mastodon4j.api.*;
+import mastodon4j.api.AccountsResource;
+import mastodon4j.api.AppsResource;
+import mastodon4j.api.BlocksResource;
+import mastodon4j.api.FavouritesResource;
+import mastodon4j.api.FollowRequestsResource;
+import mastodon4j.api.FollowsResource;
+import mastodon4j.api.InstancesResource;
+import mastodon4j.api.ListsResource;
+import mastodon4j.api.MediaResource;
+import mastodon4j.api.MutesResource;
+import mastodon4j.api.NotificationsResource;
+import mastodon4j.api.OauthResource;
+import mastodon4j.api.ReportsResource;
+import mastodon4j.api.SearchResource;
+import mastodon4j.api.StatusesResource;
+import mastodon4j.api.StreamingResource;
+import mastodon4j.api.TimelinesResource;
+import mastodon4j.api.TrendResource;
 
 /**
  * @author hecateball
  */
 public interface Mastodon extends AccountsResource, AppsResource, BlocksResource, FavouritesResource,
         FollowRequestsResource, FollowsResource, InstancesResource, MediaResource, MutesResource, NotificationsResource,
-        OauthResource, ReportsResource, SearchResource, StatusesResource, StreamingResource, TimelinesResource, ListsResource {
+        OauthResource, ReportsResource, SearchResource, StatusesResource, StreamingResource, TimelinesResource, ListsResource,
+        TrendResource {
 
     public AccountsResource accounts();
 
@@ -42,4 +60,6 @@ public interface Mastodon extends AccountsResource, AppsResource, BlocksResource
     public TimelinesResource timelines();
 
     public ListsResource list();
+
+    public TrendResource trend();
 }

@@ -3,8 +3,39 @@ package mastodon4j.internal;
 import mastodon4j.Mastodon;
 import mastodon4j.Page;
 import mastodon4j.Range;
-import mastodon4j.api.*;
-import mastodon4j.entity.*;
+import mastodon4j.api.AccountsResource;
+import mastodon4j.api.AppsResource;
+import mastodon4j.api.BlocksResource;
+import mastodon4j.api.FavouritesResource;
+import mastodon4j.api.FollowRequestsResource;
+import mastodon4j.api.FollowsResource;
+import mastodon4j.api.InstancesResource;
+import mastodon4j.api.ListsResource;
+import mastodon4j.api.MediaResource;
+import mastodon4j.api.MutesResource;
+import mastodon4j.api.NotificationsResource;
+import mastodon4j.api.OauthResource;
+import mastodon4j.api.ReportsResource;
+import mastodon4j.api.SearchResource;
+import mastodon4j.api.StatusesResource;
+import mastodon4j.api.StreamingResource;
+import mastodon4j.api.TimelinesResource;
+import mastodon4j.api.TrendResource;
+import mastodon4j.entity.AccessToken;
+import mastodon4j.entity.Account;
+import mastodon4j.entity.Application;
+import mastodon4j.entity.Attachment;
+import mastodon4j.entity.Card;
+import mastodon4j.entity.ClientCredential;
+import mastodon4j.entity.Context;
+import mastodon4j.entity.Instance;
+import mastodon4j.entity.Notification;
+import mastodon4j.entity.Relationship;
+import mastodon4j.entity.Report;
+import mastodon4j.entity.Results;
+import mastodon4j.entity.Status;
+import mastodon4j.entity.Tag;
+import mastodon4j.entity.Trend;
 import mastodon4j.entity.request.StatusUpdate;
 import mastodon4j.entity.share.Response;
 import mastodon4j.streaming.HashtagStream;
@@ -37,6 +68,7 @@ public final class _Mastodon implements Mastodon {
     private final StreamingResource streaming;
     private final TimelinesResource timelines;
     private final ListsResource list;
+    private final TrendResource trend;
 
     public _Mastodon(String uri, String accessToken) {
         this.accounts = new _AccountsResource(uri, accessToken);
@@ -56,6 +88,7 @@ public final class _Mastodon implements Mastodon {
         this.streaming = new _StreamingResource(uri, accessToken);
         this.timelines = new _TimelinesResource(uri, accessToken);
         this.list = new _ListsResource(uri, accessToken);
+        this.trend = new _TrendResource(uri, accessToken);
     }
 
     @Override
@@ -141,6 +174,11 @@ public final class _Mastodon implements Mastodon {
     @Override
     public ListsResource list() {
         return this.list;
+    }
+
+    @Override
+    public TrendResource trend() {
+        return this.trend;
     }
 
     /**
@@ -437,7 +475,8 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Response<AccessToken> issueAccessToken(String clientId, String clientSecret, String emailAddress, String password, String scopes) {
+    public Response<AccessToken> issueAccessToken(String clientId, String clientSecret, String emailAddress, String password,
+            String scopes) {
         return this.oauth().issueAccessToken(clientId, clientSecret, emailAddress, password, scopes);
     }
 
@@ -717,5 +756,13 @@ public final class _Mastodon implements Mastodon {
     @Override
     public void deleteAccountsToList(String id, long[] accountIds) {
         this.list.deleteAccountsToList(id, accountIds);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Response<Trend[]> getTrends(Long limit) {
+        return this.trend().getTrends(limit);
     }
 }
