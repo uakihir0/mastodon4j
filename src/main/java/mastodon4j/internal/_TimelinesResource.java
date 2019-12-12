@@ -2,6 +2,7 @@ package mastodon4j.internal;
 
 import mastodon4j.Range;
 import mastodon4j.api.TimelinesResource;
+import mastodon4j.entity.Conversation;
 import mastodon4j.entity.Status;
 import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
@@ -166,4 +167,34 @@ final class _TimelinesResource implements TimelinesResource {
         });
     }
 
+    @Override
+    public Response<Conversation[]> getConversations(
+            Range range) {
+
+        return proceed(Conversation[].class, () -> {
+
+            HttpRequestBuilder builder =
+                    new HttpRequestBuilder()
+                            .target(this.uri)
+                            .path("/api/v1/conversations")
+                            .request(HttpMediaType.APPLICATION_JSON)
+                            .header("Authorization", this.bearerToken);
+
+            if (range != null) {
+                if (range.getLimit().isPresent()) {
+                    builder.query("limit", range.getLimit().get());
+                }
+                if (range.getSinceId().isPresent()) {
+                    builder.query("since_id", range.getSinceId().get());
+                }
+                if (range.getMaxId().isPresent()) {
+                    builder.query("max_id", range.getMaxId().get());
+                }
+                if (range.getMinId().isPresent()) {
+                    builder.query("min_id", range.getMinId().get());
+                }
+            }
+            return builder.get();
+        });
+    }
 }

@@ -1,6 +1,7 @@
 package mastodon4j.api;
 
 import mastodon4j.Range;
+import mastodon4j.entity.Conversation;
 import mastodon4j.entity.Status;
 import mastodon4j.entity.share.Response;
 
@@ -49,5 +50,13 @@ public interface TimelinesResource {
      */
     public Response<Status[]> getListTimeline(
             String listId,
+            Range range);
+
+    /**
+     * Retrieving a conversations.
+     *
+     * @return an array of Conversations.
+     */
+    public Response<Conversation[]> getConversations(
             Range range);
 }
