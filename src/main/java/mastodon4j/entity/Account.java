@@ -41,7 +41,8 @@ public class Account implements Serializable {
     private String header;
     @SerializedName("header_static")
     private String headerStatic;
-
+    @SerializedName("emojis")
+    private Emoji[] emojis;
     @SerializedName("source")
     private AccountSource source;
     @SerializedName("fields")

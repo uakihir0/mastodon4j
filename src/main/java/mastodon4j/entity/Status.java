@@ -47,6 +47,8 @@ public class Status implements Serializable {
     private Mention[] mentions;
     @SerializedName("tags")
     private Tag[] tags;
+    @SerializedName("emojis")
+    private Emoji[] emojis;
     @SerializedName("application")
     private Application application;
 
