@@ -36,6 +36,7 @@ final class _StatusesResource implements StatusesResource {
                     .path("/api/v1/statuses/{id}")
                     .pathValue("id", String.valueOf(id))
                     .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
                     .get();
         });
     }
@@ -49,6 +50,7 @@ final class _StatusesResource implements StatusesResource {
                     .path("/api/v1/statuses/{id}/context")
                     .pathValue("id", String.valueOf(id))
                     .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
                     .get();
         });
     }
@@ -62,6 +64,7 @@ final class _StatusesResource implements StatusesResource {
                     .path("/api/v1/statuses/{id}/card")
                     .pathValue("id", String.valueOf(id))
                     .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
                     .get();
         });
     }
@@ -77,6 +80,7 @@ final class _StatusesResource implements StatusesResource {
                     .path("/api/v1/statuses/{id}/reblogged_by")
                     .pathValue("id", String.valueOf(id))
                     .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
                     .get();
         });
     }
@@ -92,6 +96,7 @@ final class _StatusesResource implements StatusesResource {
                     .path("/api/v1/statuses/{id}/favourited_by")
                     .pathValue("id", String.valueOf(id))
                     .request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
                     .get();
         });
     }
