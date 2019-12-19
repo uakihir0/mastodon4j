@@ -212,4 +212,11 @@ public class Status implements Serializable {
         this.application = application;
     }
 
+    public Emoji[] getEmojis() {
+        return emojis;
+    }
+
+    public void setEmojis(Emoji[] emojis) {
+        this.emojis = emojis;
+    }
 }

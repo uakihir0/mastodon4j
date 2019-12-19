@@ -176,6 +176,14 @@ public class Account implements Serializable {
         this.bot = bot;
     }
 
+    public Emoji[] getEmojis() {
+        return emojis;
+    }
+
+    public void setEmojis(Emoji[] emojis) {
+        this.emojis = emojis;
+    }
+
     public AccountSource getSource() {
         return source;
     }
