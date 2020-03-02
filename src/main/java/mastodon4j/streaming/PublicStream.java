@@ -6,5 +6,5 @@ package mastodon4j.streaming;
  */
 public interface PublicStream extends EventStream {
 
-    public PublicStream register(PublicStreamListener listener);
+    public PublicStream register(PublicStreamListener listener, LifeCycleListener lifeCycle);
 }
