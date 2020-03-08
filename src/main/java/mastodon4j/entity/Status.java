@@ -51,6 +51,8 @@ public class Status implements Serializable {
     private Emoji[] emojis;
     @SerializedName("application")
     private Application application;
+    @SerializedName("poll")
+    private Poll poll;
 
     public long getId() {
         return id;
@@ -218,5 +220,13 @@ public class Status implements Serializable {
 
     public void setEmojis(Emoji[] emojis) {
         this.emojis = emojis;
+    }
+
+    public Poll getPoll() {
+        return poll;
+    }
+
+    public void setPoll(Poll poll) {
+        this.poll = poll;
     }
 }
