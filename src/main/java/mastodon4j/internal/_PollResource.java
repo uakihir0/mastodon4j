@@ -22,7 +22,7 @@ public class _PollResource implements PollResource {
     }
 
     @Override
-    public Response<Poll> votePoll(String id, long[] choices) {
+    public Response<Poll> votePoll(long id, long[] choices) {
         return proceed(Poll.class, () -> {
 
             HttpRequestBuilder builder =

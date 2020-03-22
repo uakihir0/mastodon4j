@@ -11,5 +11,5 @@ public interface PollResource {
     /**
      * Vote on a poll.
      */
-    public Response<Poll> votePoll(String id, long[] choices);
+    public Response<Poll> votePoll(long id, long[] choices);
 }

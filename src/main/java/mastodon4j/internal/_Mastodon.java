@@ -788,7 +788,7 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
-    public Response<Poll> votePoll(String id, long[] choices) {
+    public Response<Poll> votePoll(long id, long[] choices) {
         return this.poll().votePoll(id, choices);
     }
 }
