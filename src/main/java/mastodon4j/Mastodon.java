@@ -12,6 +12,7 @@ import mastodon4j.api.MediaResource;
 import mastodon4j.api.MutesResource;
 import mastodon4j.api.NotificationsResource;
 import mastodon4j.api.OauthResource;
+import mastodon4j.api.PollResource;
 import mastodon4j.api.ReportsResource;
 import mastodon4j.api.SearchResource;
 import mastodon4j.api.StatusesResource;
@@ -25,7 +26,7 @@ import mastodon4j.api.TrendResource;
 public interface Mastodon extends AccountsResource, AppsResource, BlocksResource, FavouritesResource,
         FollowRequestsResource, FollowsResource, InstancesResource, MediaResource, MutesResource, NotificationsResource,
         OauthResource, ReportsResource, SearchResource, StatusesResource, StreamingResource, TimelinesResource, ListsResource,
-        TrendResource {
+        TrendResource, PollResource {
 
     public AccountsResource accounts();
 
@@ -62,4 +63,6 @@ public interface Mastodon extends AccountsResource, AppsResource, BlocksResource
     public ListsResource list();
 
     public TrendResource trend();
+
+    public PollResource poll();
 }
