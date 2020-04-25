@@ -10,8 +10,6 @@ import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
 
-import java.util.stream.Collectors;
-
 import static mastodon4j.internal._InternalUtility.proceed;
 
 /**
@@ -130,8 +128,9 @@ final class _StatusesResource implements StatusesResource {
             }
 
             if (status.getMediaIds() != null && !status.getMediaIds().isEmpty()) {
-                builder.param("media_ids[]", status.getMediaIds().stream() //
-                        .map(String::valueOf).collect(Collectors.joining(",")));
+                for (long i : status.getMediaIds()) {
+                    builder.param("media_ids[]", i);
+                }
             }
 
             return builder.request(HttpMediaType.APPLICATION_JSON)
