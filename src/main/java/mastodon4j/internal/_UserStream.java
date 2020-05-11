@@ -74,11 +74,14 @@ final class _UserStream implements UserStream {
                     } while (line != null);
 
                 } catch (InterruptedException e) {
+                    isOpen = false;
                     // close connection
                     if (lifeCycle != null) {
                         lifeCycle.onDisconnect();
                     }
+
                 } catch (Exception e) {
+                    isOpen = false;
                     // http exception
                     if (lifeCycle != null) {
                         lifeCycle.onDisconnect();
