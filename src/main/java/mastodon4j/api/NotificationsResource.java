@@ -1,7 +1,9 @@
 package mastodon4j.api;
 
 import mastodon4j.Range;
+import mastodon4j.entity.Alert;
 import mastodon4j.entity.Notification;
+import mastodon4j.entity.Subscription;
 import mastodon4j.entity.share.Response;
 
 import java.util.List;
@@ -34,4 +36,15 @@ public interface NotificationsResource {
      */
     public Response<Void> clearNotifications();
 
+
+    /**
+     * Register service worker endpoint.
+     *
+     * @return subscription info that registered.
+     */
+    public Response<Subscription> pushSubscription(
+            String endpoint,
+            String p256dh,
+            String auth,
+            Alert alert);
 }

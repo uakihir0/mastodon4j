@@ -2,7 +2,9 @@ package mastodon4j.internal;
 
 import mastodon4j.Range;
 import mastodon4j.api.NotificationsResource;
+import mastodon4j.entity.Alert;
 import mastodon4j.entity.Notification;
+import mastodon4j.entity.Subscription;
 import mastodon4j.entity.share.Response;
 import net.socialhub.http.HttpMediaType;
 import net.socialhub.http.HttpRequestBuilder;
@@ -93,5 +95,50 @@ final class _NotificationsResource implements NotificationsResource {
                     .header("Authorization", this.bearerToken)
                     .post();
         });
+    }
+
+    @Override
+    public Response<Subscription> pushSubscription(
+            String endpoint,
+            String p256dh,
+            String auth,
+            Alert alert) {
+
+        return proceed(Subscription.class, () -> {
+
+            HttpRequestBuilder builder = new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/push/subscription");
+
+            builder.param("subscription[endpoint]", endpoint);
+            builder.param("subscription[keys][p256dh]", p256dh);
+            builder.param("subscription[keys][auth]", auth);
+
+            if (alert != null) {
+                if (alert.getFollow() != null) {
+                    builder.param("data[alerts][follow]", booleanValue(alert.getFollow()));
+                }
+                if (alert.getFavourite() != null) {
+                    builder.param("data[alerts][favourite]", booleanValue(alert.getFavourite()));
+                }
+                if (alert.getReblog() != null) {
+                    builder.param("data[alerts][reblog]", booleanValue(alert.getReblog()));
+                }
+                if (alert.getMention() != null) {
+                    builder.param("data[alerts][mention]", booleanValue(alert.getMention()));
+                }
+                if (alert.getPoll() != null) {
+                    builder.param("data[alerts][poll]", booleanValue(alert.getPoll()));
+                }
+            }
+
+            return builder.request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .post();
+        });
+    }
+
+    private String booleanValue(Boolean b) {
+        return b ? "true" : "false";
     }
 }

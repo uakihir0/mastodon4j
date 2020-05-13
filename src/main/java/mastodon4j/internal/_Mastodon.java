@@ -24,6 +24,7 @@ import mastodon4j.api.TimelinesResource;
 import mastodon4j.api.TrendResource;
 import mastodon4j.entity.AccessToken;
 import mastodon4j.entity.Account;
+import mastodon4j.entity.Alert;
 import mastodon4j.entity.Application;
 import mastodon4j.entity.Attachment;
 import mastodon4j.entity.Card;
@@ -37,6 +38,7 @@ import mastodon4j.entity.Relationship;
 import mastodon4j.entity.Report;
 import mastodon4j.entity.Results;
 import mastodon4j.entity.Status;
+import mastodon4j.entity.Subscription;
 import mastodon4j.entity.Tag;
 import mastodon4j.entity.Trend;
 import mastodon4j.entity.request.StatusUpdate;
@@ -479,6 +481,14 @@ public final class _Mastodon implements Mastodon {
     @Override
     public Response<Void> clearNotifications() {
         return this.notifications().clearNotifications();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Response<Subscription> pushSubscription(String endpoint, String p256dh, String auth, Alert alert) {
+        return this.notifications().pushSubscription(endpoint, p256dh, auth, alert);
     }
 
     /**
