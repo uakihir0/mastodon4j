@@ -16,4 +16,12 @@ public class MastodonException extends RuntimeException {
         this.statusCode = statusCode;
         this.error = error;
     }
+
+    public Error getError() {
+        return error;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
 }
