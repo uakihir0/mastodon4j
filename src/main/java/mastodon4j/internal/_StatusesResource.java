@@ -133,6 +133,25 @@ final class _StatusesResource implements StatusesResource {
                 }
             }
 
+            // Poll
+            if (status.getPollOptions() != null && !status.getPollOptions().isEmpty()) {
+                for (String option : status.getPollOptions()) {
+                    builder.param("poll[options][]", option);
+                }
+
+                if (status.getPollExpiresIn() != null) {
+                    builder.param("poll[expires_in]", status.getPollExpiresIn());
+                }
+
+                if (status.getPollMultiple() != null) {
+                    builder.param("poll[multiple]", status.getPollMultiple());
+                }
+
+                if (status.getPollHideTotals() != null) {
+                    builder.param("poll[hide_totals]", status.getPollHideTotals());
+                }
+            }
+
             return builder.request(HttpMediaType.APPLICATION_JSON)
                     .header("Authorization", this.bearerToken)
                     .post();
