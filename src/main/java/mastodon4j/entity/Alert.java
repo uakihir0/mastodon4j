@@ -20,7 +20,9 @@ public class Alert implements Serializable {
     private Boolean mention;
     @SerializedName("poll")
     private Boolean poll;
-
+    @SerializedName("status")
+    private Boolean status;
+    
     public Boolean getFollow() {
         return follow;
     }
@@ -59,5 +61,13 @@ public class Alert implements Serializable {
 
     public void setPoll(Boolean poll) {
         this.poll = poll;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 }

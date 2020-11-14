@@ -98,6 +98,21 @@ final class _NotificationsResource implements NotificationsResource {
     }
 
     @Override
+    public Response<Subscription> getSubscription() {
+
+        return proceed(Subscription.class, () -> {
+
+            HttpRequestBuilder builder = new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/push/subscription");
+
+            return builder.request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .get();
+        });
+    }
+
+    @Override
     public Response<Subscription> pushSubscription(
             String endpoint,
             String p256dh,
@@ -130,11 +145,49 @@ final class _NotificationsResource implements NotificationsResource {
                 if (alert.getPoll() != null) {
                     builder.param("data[alerts][poll]", booleanValue(alert.getPoll()));
                 }
+                if (alert.getStatus() != null) {
+                    builder.param("data[alerts][status]", booleanValue(alert.getStatus()));
+                }
             }
 
             return builder.request(HttpMediaType.APPLICATION_JSON)
                     .header("Authorization", this.bearerToken)
                     .post();
+        });
+    }
+
+    @Override
+    public Response<Subscription> editSubscription(Alert alert) {
+        return proceed(Subscription.class, () -> {
+
+            HttpRequestBuilder builder = new HttpRequestBuilder()
+                    .target(this.uri)
+                    .path("/api/v1/push/subscription");
+
+            if (alert != null) {
+                if (alert.getFollow() != null) {
+                    builder.param("data[alerts][follow]", booleanValue(alert.getFollow()));
+                }
+                if (alert.getFavourite() != null) {
+                    builder.param("data[alerts][favourite]", booleanValue(alert.getFavourite()));
+                }
+                if (alert.getReblog() != null) {
+                    builder.param("data[alerts][reblog]", booleanValue(alert.getReblog()));
+                }
+                if (alert.getMention() != null) {
+                    builder.param("data[alerts][mention]", booleanValue(alert.getMention()));
+                }
+                if (alert.getPoll() != null) {
+                    builder.param("data[alerts][poll]", booleanValue(alert.getPoll()));
+                }
+                if (alert.getStatus() != null) {
+                    builder.param("data[alerts][status]", booleanValue(alert.getStatus()));
+                }
+            }
+
+            return builder.request(HttpMediaType.APPLICATION_JSON)
+                    .header("Authorization", this.bearerToken)
+                    .put();
         });
     }
 

@@ -487,8 +487,24 @@ public final class _Mastodon implements Mastodon {
      * {@inheritDoc}
      */
     @Override
+    public Response<Subscription> getSubscription() {
+        return this.notifications().getSubscription();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Response<Subscription> pushSubscription(String endpoint, String p256dh, String auth, Alert alert) {
         return this.notifications().pushSubscription(endpoint, p256dh, auth, alert);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Response<Subscription> editSubscription(Alert alert) {
+        return this.notifications().editSubscription(alert);
     }
 
     /**

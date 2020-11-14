@@ -38,6 +38,14 @@ public interface NotificationsResource {
 
 
     /**
+     * Get current subscription.
+     *
+     * @return subscription info.
+     */
+    public Response<Subscription> getSubscription();
+
+    /**
+     * Subscribe to push notifications.
      * Register service worker endpoint.
      *
      * @return subscription info that registered.
@@ -46,5 +54,13 @@ public interface NotificationsResource {
             String endpoint,
             String p256dh,
             String auth,
+            Alert alert);
+
+    /**
+     * Change types of notifications
+     *
+     * @return subscription info.
+     */
+    public Response<Subscription> editSubscription(
             Alert alert);
 }
